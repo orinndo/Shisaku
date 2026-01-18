@@ -24,18 +24,28 @@ document.querySelectorAll("#panel .btns button").forEach(btn=>{
   };
 });
 
+document.getElementById('copyInputBtn')?.addEventListener('click',()=>{
+  const t=document.getElementById('jpText').value;
+  if(!t) return;
+  navigator.clipboard.writeText(t);
+  const toast=document.getElementById('toast');
+  toast.textContent='コピーしました';
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),1200);
+});
 
-function copyText() {
-  const text = document.getElementById("translateInput").value;
-  if (!text) return;
-  navigator.clipboard.writeText(text).then(() => {
-    alert("コピーしました");
+// ---- Persist input text across navigation ----
+(function(){
+  const KEY = 'translator_input_jp';
+  const ta = document.getElementById('jpText');
+  if(!ta) return;
+
+  // restore
+  const saved = localStorage.getItem(KEY);
+  if(saved) ta.value = saved;
+
+  // save on input
+  ta.addEventListener('input', ()=>{
+    localStorage.setItem(KEY, ta.value);
   });
-}
-
-
-function toggleTranslator() {
-  const panel = document.getElementById("translatorPanel");
-  if (!panel) return;
-  panel.style.display = panel.style.display === "none" ? "block" : "none";
-}
+})();
