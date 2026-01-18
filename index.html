@@ -3,22 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Translator Full Fix</title>
-<link rel="stylesheet" href="translator.v3.css">
+<title>音声ガイド + 翻訳ツール</title>
+<link rel="stylesheet" href="translator.css">
 </head>
 <body>
 
-<div class="translator-box">
-  <textarea id="jpText" placeholder="日本語を入力してください"></textarea>
-  <button id="copyBtn">📋 入力文をコピー</button>
+<!-- 既存コンテンツがここにある想定 -->
 
-  <div class="buttons">
-    <button class="btn-google">Google翻訳</button>
-    <button class="btn-deepl">DeepL</button>
-    <button class="btn-gemini">Gemini</button>
+<section id="translator-section">
+  <h2>翻訳ツール</h2>
+
+  <div class="translator-card">
+    <textarea id="jpText" placeholder="日本語を入力してください"></textarea>
+
+    <button id="copyInputBtn" class="copy-btn">📋 入力文をコピー</button>
+
+    <div class="translator-buttons">
+      <button class="btn-google" data-t="google">Google翻訳</button>
+      <button class="btn-deepl" data-t="deepl">DeepL</button>
+      <button class="btn-gemini" data-t="gemini">Gemini</button>
+    </div>
+
+    <p class="note">
+      翻訳結果には誤りが含まれる場合があります。使用前に必ず内容を確認してください。
+    </p>
   </div>
-</div>
+</section>
 
-<script src="translator.v3.js"></script>
+<script src="translator.js"></script>
 </body>
 </html>
