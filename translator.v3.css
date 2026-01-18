@@ -1,0 +1,24 @@
+.translator-box {
+  margin: 16px;
+}
+
+.translator-box textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid #999;
+}
+
+#copyBtn {
+  margin-top: 8px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #eef;
+}
+
+.btn-google { color:#1a73e8; }
+.btn-deepl { color:#0f2a44; }
+.btn-gemini { color:#6a4cff; }
