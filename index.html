@@ -130,7 +130,7 @@ body {
 </div>
 
 
-<section class="translator translator-glass">
+<section class="translator translator-glass" id="translatorPanel" style="display:none;">
   <h2 class="translator-title">翻訳ツール</h2>
   <textarea id="translateInput" placeholder="日本語を入力してください"></textarea>
 
@@ -141,6 +141,9 @@ body {
     <button class="btn copy" onclick="copyText()">コピー</button>
   </div>
 </section>
+
+
+<button id="translatorToggle" class="translator-plus" onclick="toggleTranslator()">＋</button>
 
 </body>
 </html><a class="card" href="https://orinndo.github.io/patient-entry/">

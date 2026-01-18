@@ -149,3 +149,21 @@
 .btn.deepl { background: #0F2B46; }
 .btn.gemini { background: #8E75FF; }
 .btn.copy { background: #64748b; }
+
+
+/* --- Translator plus toggle --- */
+.translator-plus {
+  position: fixed;
+  right: 16px;
+  bottom: 96px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-size: 32px;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  z-index: 999;
+}
+

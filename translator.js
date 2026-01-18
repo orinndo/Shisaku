@@ -32,3 +32,10 @@ function copyText() {
     alert("コピーしました");
   });
 }
+
+
+function toggleTranslator() {
+  const panel = document.getElementById("translatorPanel");
+  if (!panel) return;
+  panel.style.display = panel.style.display === "none" ? "block" : "none";
+}
