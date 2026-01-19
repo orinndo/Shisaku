@@ -3,33 +3,203 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>音声ガイド + 翻訳ツール</title>
-<link rel="stylesheet" href="translator.css">
+<title>音声ガイドを選択してください</title>
+<style>
+body {
+ margin:0;
+ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+ background:linear-gradient(180deg,#f7fbff,#eef6ff);
+ color:#0f172a;
+}
+.header {
+ padding:18px;
+}
+.header h1 { margin:0 0 6px; font-size:22px; }
+.header p { margin:0; font-size:13px; color:#475569; }
+.container { padding:10px 14px 24px; }
+.card {
+ display:flex;
+ align-items:center;
+ padding:16px;
+ margin-bottom:14px;
+ background:#ffffff;
+ border:1px solid #e2e8f0;
+ border-radius:16px;
+ text-decoration:none;
+ color:#0f172a;
+ box-shadow:0 8px 18px rgba(15,23,42,0.06);
+}
+.num {
+ font-size:18px;
+ font-weight:700;
+ width:40px;
+ height:40px;
+ border-radius:12px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:linear-gradient(135deg,#93c5fd,#38bdf8);
+ color:#ffffff;
+ margin-right:14px;
+}
+.jp { font-size:16px; font-weight:600; }
+.en { font-size:13px; color:#475569; margin-top:2px; }
+.card:active { transform:scale(.98); }
+</style>
 </head>
 <body>
+<div class="header">
+  
 
-<!-- 既存コンテンツがここにある想定 -->
 
-<section id="translator-section">
-  <h2>翻訳ツール</h2>
+<div class="header-title frame-title">
+  <h1 class="main-title">
+    冠動脈造影CT検査<br>
+    <span class="sub-title">英語音声ガイド</span>
+  </h1>
+  <p class="en-title">
+    Coronary CT Angiography – English Audio Guide
+  </p>
+</div>
 
-  <div class="translator-card">
-    <textarea id="jpText" placeholder="日本語を入力してください"></textarea>
 
-    <button id="copyInputBtn" class="copy-btn">📋 入力文をコピー</button>
-
-    <div class="translator-buttons">
-      <button class="btn-google" data-t="google">Google翻訳</button>
-      <button class="btn-deepl" data-t="deepl">DeepL</button>
-      <button class="btn-gemini" data-t="gemini">Gemini</button>
-    </div>
-
-    <p class="note">
-      翻訳結果には誤りが含まれる場合があります。使用前に必ず内容を確認してください。
-    </p>
+  <div>
+    
   </div>
-</section>
+</div>
 
+</div>
+<div class="container">
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+<!-- 翻訳ツール：＋ボタン -->
+<button id="fab">＋</button>
+
+<!-- 翻訳ツール：オーバーレイ -->
+<div id="overlay" class="hidden"></div>
+
+<!-- 翻訳ツール：パネル -->
+<div id="panel" class="hidden">
+  <h2>翻訳ツール</h2>
+<div class="translator-glass">
+  <textarea id="jp" placeholder="日本語を入力してください"></textarea>
+
+  <div class="btns">
+    <button data-t="google">Google翻訳</button>
+    <button data-t="deepl">DeepL</button>
+    <button data-t="gemini">Gemini</button>
+  </div>
+
+  <p class="note">
+    翻訳結果には誤りが含まれる場合があります。使用する前に、内容を必ず確認してください。</div>
+  </p>
+</div>
+
+<link rel="stylesheet" href="translator.css">
 <script src="translator.js"></script>
+
+
+<div class="page-footer">
+  <hr>
+  <p class="creator">
+    作成：上地 慶知<br>
+    所属：放射線課
+  </p>
+  <p class="creator-en">
+    Created by Yoshitomo Uechi<br>
+    Department of Radiology
+  </p>
+</div>
+
+<div id="toast" class="toast"></div>
 </body>
-</html>
+</html><a class="card" href="https://orinndo.github.io/patient-entry/">
+      <div class="num">01</div>
+      <div class="texts">
+        <div class="jp">患者入室</div>
+        <div class="en">Patient Entry</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/ECG-BP-Positioning/">
+      <div class="num">02</div>
+      <div class="texts">
+        <div class="jp">心電図・血圧測定・息止め練習・ポジショニング</div>
+        <div class="en">ECG, Blood Pressure, Breath-hold Practice & Positioning</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/ABL/">
+      <div class="num">03</div>
+      <div class="texts">
+        <div class="jp">ABL前検査の場合</div>
+        <div class="en">Pre-ABL Examination</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/nitropen-sublingual/">
+      <div class="num">04</div>
+      <div class="texts">
+        <div class="jp">ニトロペン（舌下投与）</div>
+        <div class="en">Nitropen Sublingual Administration</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/explanation-of-contrast-dye-/">
+      <div class="num">05</div>
+      <div class="texts">
+        <div class="jp">造影剤の説明</div>
+        <div class="en">Explanation of Contrast Dye</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/IV-access/">
+      <div class="num">06</div>
+      <div class="texts">
+        <div class="jp">点滴ルート確保</div>
+        <div class="en">IV Access</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/corebeta-injection/">
+      <div class="num">07</div>
+      <div class="texts">
+        <div class="jp">コアベータ投与</div>
+        <div class="en">Corebeta Injection</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/test-injection-guide/">
+      <div class="num">08</div>
+      <div class="texts">
+        <div class="jp">テスト注入</div>
+        <div class="en">Test Injection Guide</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/actual-injection/">
+      <div class="num">09</div>
+      <div class="texts">
+        <div class="jp">撮影本番</div>
+        <div class="en">Actual Injection</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/after-the-exam/">
+      <div class="num">10</div>
+      <div class="texts">
+        <div class="jp">検査終了後</div>
+        <div class="en">After the Exam</div>
+      </div>
+    </a>
+
