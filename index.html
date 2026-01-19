@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>患者入室（Patient Entry）音声ガイド</title>
+<title>血圧測定・心電図・息止め練習</title>
 <style>
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
 background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
@@ -14,7 +14,8 @@ background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
 .note{font-size:12px;color:#475569;margin:12px 16px;}
 .main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;
+overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
 button:active{transform:scale(.98);}
 .label{margin-top:14px;font-size:13px;color:#475569;}
@@ -29,7 +30,7 @@ audio{width:100%;margin-top:10px;}
 <body>
 <div class="header">
   <div class="frame-title">
-    <h1>患者入室（Patient Entry）</h1>
+    <h1>血圧測定・心電図・息止め練習</h1>
     <p>English Audio Guide</p>
   </div>
 </div>
@@ -64,25 +65,7 @@ audio{width:100%;margin-top:10px;}
 </div>
 
 <script>
-const STEPS = [
- {preview:"本日の通訳はすでに退勤しています…", jp:"本日の通訳はすでに退勤していますので、英語のガイドを使って説明します。", en:"Our interpreter has already left for the day, so I'll explain using an English guide."},
- {preview:"分からないことがあれば…", jp:"分からないことがあれば、いつでも言ってください。", en:"Please let me know if anything is unclear."},
- {preview:"生年月日を教えてください…", jp:"生年月日を教えていただけますか？", en:"Could you tell me your date of birth?"},
- {preview:"心臓デバイスの確認…", jp:"胸にペースメーカー、ICD、CRTなどの心臓デバイスは入っていますか？", en:"Do you have any heart devices in your chest, like a pacemaker, ICD, or CRT?"},
- {preview:"ベッドに座ってください…", jp:"ベッドに座って、靴を脱いでください。", en:"Please sit on the bed and take off your shoes."},
- {preview:"仰向けに寝てください…", jp:"ベッドに仰向けで寝てください。", en:"Please lie on your back on the bed."},
- {preview:"頭と足の位置…", jp:"頭はここ、足はあちらです。", en:"Your head goes here, and your feet go there."},
- {preview:"立ち上がって座る…", jp:"ゆっくり立ち上がって、ベッドに座ってください。", en:"Please stand up slowly and sit on the bed."},
- {preview:"スライドボード…", jp:"背中の後ろにスライドボードを入れますね。", en:"I'll put a slide board behind your back."},
- {preview:"ベッドへ移動…", jp:"これからベッドに移りますね。", en:"Let me slide you onto the bed now."},
- {preview:"少し上に…", jp:"少し上にずれてください。", en:"Please slide up a little."},
- {preview:"少し下に…", jp:"少し下にずれてください。", en:"Please slide down a little."},
- {preview:"上に移動…", jp:"少し上に移動しますね。", en:"I'll slide you up a little."},
- {preview:"下に移動…", jp:"少し下に移動しますね。", en:"I'll slide you down a little."},
- {preview:"首は大丈夫？", jp:"首はつらくないですか？", en:"Is your neck comfortable?"},
- {preview:"高さの確認…", jp:"高すぎたり低すぎたりしませんか？", en:"Is it not too high or low?"},
- {preview:"ベッドが動きます…", jp:"ベッドが動きますので、動かないでください。", en:"The bed will move now, so please stay still."}
-];
+const STEPS = [{'preview': 'ステップ 1 の説明…', 'jp': '（日本語全文）ステップ 1 の説明文です。', 'en': '(English full text) This is the full script for step 1.'}, {'preview': 'ステップ 2 の説明…', 'jp': '（日本語全文）ステップ 2 の説明文です。', 'en': '(English full text) This is the full script for step 2.'}, {'preview': 'ステップ 3 の説明…', 'jp': '（日本語全文）ステップ 3 の説明文です。', 'en': '(English full text) This is the full script for step 3.'}, {'preview': 'ステップ 4 の説明…', 'jp': '（日本語全文）ステップ 4 の説明文です。', 'en': '(English full text) This is the full script for step 4.'}, {'preview': 'ステップ 5 の説明…', 'jp': '（日本語全文）ステップ 5 の説明文です。', 'en': '(English full text) This is the full script for step 5.'}, {'preview': 'ステップ 6 の説明…', 'jp': '（日本語全文）ステップ 6 の説明文です。', 'en': '(English full text) This is the full script for step 6.'}, {'preview': 'ステップ 7 の説明…', 'jp': '（日本語全文）ステップ 7 の説明文です。', 'en': '(English full text) This is the full script for step 7.'}, {'preview': 'ステップ 8 の説明…', 'jp': '（日本語全文）ステップ 8 の説明文です。', 'en': '(English full text) This is the full script for step 8.'}, {'preview': 'ステップ 9 の説明…', 'jp': '（日本語全文）ステップ 9 の説明文です。', 'en': '(English full text) This is the full script for step 9.'}, {'preview': 'ステップ 10 の説明…', 'jp': '（日本語全文）ステップ 10 の説明文です。', 'en': '(English full text) This is the full script for step 10.'}, {'preview': 'ステップ 11 の説明…', 'jp': '（日本語全文）ステップ 11 の説明文です。', 'en': '(English full text) This is the full script for step 11.'}, {'preview': 'ステップ 12 の説明…', 'jp': '（日本語全文）ステップ 12 の説明文です。', 'en': '(English full text) This is the full script for step 12.'}, {'preview': 'ステップ 13 の説明…', 'jp': '（日本語全文）ステップ 13 の説明文です。', 'en': '(English full text) This is the full script for step 13.'}, {'preview': 'ステップ 14 の説明…', 'jp': '（日本語全文）ステップ 14 の説明文です。', 'en': '(English full text) This is the full script for step 14.'}, {'preview': 'ステップ 15 の説明…', 'jp': '（日本語全文）ステップ 15 の説明文です。', 'en': '(English full text) This is the full script for step 15.'}, {'preview': 'ステップ 16 の説明…', 'jp': '（日本語全文）ステップ 16 の説明文です。', 'en': '(English full text) This is the full script for step 16.'}, {'preview': 'ステップ 17 の説明…', 'jp': '（日本語全文）ステップ 17 の説明文です。', 'en': '(English full text) This is the full script for step 17.'}, {'preview': 'ステップ 18 の説明…', 'jp': '（日本語全文）ステップ 18 の説明文です。', 'en': '(English full text) This is the full script for step 18.'}, {'preview': 'ステップ 19 の説明…', 'jp': '（日本語全文）ステップ 19 の説明文です。', 'en': '(English full text) This is the full script for step 19.'}, {'preview': 'ステップ 20 の説明…', 'jp': '（日本語全文）ステップ 20 の説明文です。', 'en': '(English full text) This is the full script for step 20.'}, {'preview': 'ステップ 21 の説明…', 'jp': '（日本語全文）ステップ 21 の説明文です。', 'en': '(English full text) This is the full script for step 21.'}, {'preview': 'ステップ 22 の説明…', 'jp': '（日本語全文）ステップ 22 の説明文です。', 'en': '(English full text) This is the full script for step 22.'}, {'preview': 'ステップ 23 の説明…', 'jp': '（日本語全文）ステップ 23 の説明文です。', 'en': '(English full text) This is the full script for step 23.'}, {'preview': 'ステップ 24 の説明…', 'jp': '（日本語全文）ステップ 24 の説明文です。', 'en': '(English full text) This is the full script for step 24.'}, {'preview': 'ステップ 25 の説明…', 'jp': '（日本語全文）ステップ 25 の説明文です。', 'en': '(English full text) This is the full script for step 25.'}];
 
 const sel=document.getElementById('sel'),
 jp=document.getElementById('jp'),
@@ -111,7 +94,7 @@ document.getElementById('prev').onclick=()=>load(idx-1);
 document.getElementById('next').onclick=()=>load(idx+1);
 document.getElementById('play').onclick=()=>player.play();
 document.getElementById('pause').onclick=()=>player.pause();
-document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
+document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();};
 player.onplay=()=>status.textContent="再生中 / Playing";
 player.onpause=()=>status.textContent="一時停止 / Paused";
 player.onended=()=>status.textContent="待機中 / Ready";
