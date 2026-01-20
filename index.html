@@ -1,140 +1,205 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>造影剤の説明・チューブ接続</title>
-  <style>
-    :root{--border:#e6e6e6;--muted:#666;}
-    body{font-family:system-ui,-apple-system,"Hiragino Sans",sans-serif;margin:16px;line-height:1.35;}
-    h2{margin:0 0 8px 0;}
-    .note{color:var(--muted);font-size:12px;margin:0 0 14px 0;}
-    .card{border:1px solid var(--border);border-radius:12px;padding:14px;max-width:900px;}
-    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-    select{font-size:16px;padding:10px 12px;min-width:280px;flex:1;}
-    button{font-size:16px;padding:10px 14px;border:1px solid var(--border);background:#fff;border-radius:10px;}
-    button:active{transform:scale(0.99);}
-    button[disabled]{opacity:0.4;}
-    .label{font-size:12px;color:var(--muted);margin-top:12px;}
-    .jp{font-size:20px;font-weight:700;margin:6px 0 12px 0;}
-    .en{font-size:18px;margin:6px 0 0 0;}
-    .controls{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0;}
-    audio{width:100%;margin-top:8px;}
-    .status{font-size:12px;color:var(--muted);}
-    .hint{font-size:12px;color:var(--muted);margin-top:10px;}
-    .pill{display:inline-block;padding:4px 8px;border:1px solid var(--border);border-radius:999px;font-size:12px;color:var(--muted);}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>造影剤の説明・チューブ接続</title>
+<style>
+body {
+ margin:0;
+ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+ background:linear-gradient(180deg,#f7fbff,#eef6ff);
+ color:#0f172a;
+}
+.header {
+ padding:18px;
+}
+.header h1 { margin:0 0 6px; font-size:22px; }
+.header p { margin:0; font-size:13px; color:#475569; }
+.container { padding:10px 14px 24px; }
+.card {
+ display:flex;
+ align-items:center;
+ padding:16px;
+ margin-bottom:14px;
+ background:#ffffff;
+ border:1px solid #e2e8f0;
+ border-radius:16px;
+ text-decoration:none;
+ color:#0f172a;
+ box-shadow:0 8px 18px rgba(15,23,42,0.06);
+}
+.num {
+ font-size:18px;
+ font-weight:700;
+ width:40px;
+ height:40px;
+ border-radius:12px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:linear-gradient(135deg,#93c5fd,#38bdf8);
+ color:#ffffff;
+ margin-right:14px;
+}
+.jp { font-size:16px; font-weight:600; }
+.en { font-size:13px; color:#475569; margin-top:2px; }
+.card:active { transform:scale(.98); }
+</style>
 </head>
 <body>
-  <h2>患者入室（Patient Entry）音声ガイド</h2>
-  <p class="note">※ iPhone/iPad/Androidで再生できます。自動再生は端末側で制限されるため、最初は「再生」を押してください。</p>
+<div class="header">
+  
 
-  <div class="card">
-    <div class="row">
-      <div class="pill">ステップ選択</div>
-      <select id="stepSelect" aria-label="Step select">
-        <option value="01">01. Our interpreter has already left for the day, so I&#x27;ll explain using an English guide.</option>
-<option value="02">02. Please let me know if anything is unclear.</option>
-<option value="03">03. Could you tell me your date of birth?</option>
-<option value="04">04. Do you have any heart devices in your chest, like a pacemaker, ICD, or CRT?</option>
-<option value="05">05. Please sit on the bed and take off your shoes.</option>
-<option value="06">06. Please lie on your back on the bed.</option>
-<option value="07">07. Your head goes here, and your feet go there.</option>
-<option value="08">08. Please stand up slowly and sit on the bed.</option>
-<option value="09">09. I&#x27;ll put a slide board behind your back.</option>
-<option value="10">10. Let me slide you onto the bed now.</option>
-<option value="11">11. Please slide up a little.</option>
-<option value="12">12. Please slide down a little.</option>
-<option value="13">13. I&#x27;ll slide you up a little.</option>
-<option value="14">14. I&#x27;ll slide you down a little.</option>
-<option value="15">15. Is your neck comfortable?</option>
-<option value="16">16. Is it not too high or low?</option>
-<option value="17">17. The bed will move now, so please stay still.</option>
-      </select>
-      <button id="prevBtn">← 前</button>
-      <button id="nextBtn">次 →</button>
-    </div>
 
-    <div class="label">日本語（内容）</div>
-    <div class="jp" id="jpText"></div>
+<div class="header-title frame-title">
+  <h1 class="main-title">
+    冠動脈造影CT検査<br>
+    <span class="sub-title">英語音声ガイド</span>
+  </h1>
+  <p class="en-title">
+    Coronary CT Angiography – English Audio Guide
+  </p>
+</div>
 
-    <div class="label">English (Script)</div>
-    <div class="en" id="enText"></div>
 
-    <div class="controls">
-      <button id="playBtn">▶︎ 再生 / Play</button>
-      <button id="pauseBtn">⏸ 一時停止 / Pause</button>
-      <button id="replayBtn">↻ もう一度 / Replay</button>
-      <span class="status" id="status">待機中 / Ready</span>
-    </div>
+  <div>
+    
+  </div>
+</div>
 
-    <audio id="player" controls playsinline preload="none"></audio>
-    <div class="hint">再生できない場合：端末の消音モード解除、音量、Bluetooth接続を確認してください。</div>
+</div>
+<div class="container">
+  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</div>
+
+<!-- 翻訳ツール：＋ボタン -->
+<button id="fab">＋</button>
+
+<!-- 翻訳ツール：オーバーレイ -->
+<div id="overlay" class="hidden"></div>
+
+<!-- 翻訳ツール：パネル -->
+<div id="panel" class="hidden">
+  <h2>翻訳ツール</h2>
+<div class="translator-glass">
+  <textarea id="jp" placeholder="日本語を入力してください"></textarea>
+
+  <div class="btns">
+    <button data-t="google">Google翻訳</button>
+    <button data-t="deepl">DeepL</button>
+    <button data-t="gemini">Gemini</button>
   </div>
 
-<script>
-  const STEPS = [
- {preview:"これから造影剤について順…", jp:"これから造影剤について順番に説明します。", en:"I'll walk you through the contrast dye now."},
- {preview:"造影剤を静脈に注射すると…", jp:"造影剤を静脈に注射すると、血管の中の圧力の影響で、体全体が熱く感じることがあります。", en:"When the contrast dye is injected into your vein, you might feel warm sensation throughout your body due to the pressure in your blood vessels."},
- {preview:"皆さん同じように感じます…", jp:"皆さん同じように感じますし、すぐにおさまりますので、心配しないでください。", en:"Everyone feels the same way, and it will go away soon, so please don’t worry."},
- {preview:"造影剤が入ったあと、何か…", jp:"造影剤が入ったあと、何かが起きたように感じるかもしれませんが、あくまで感覚だけで、実際には何も起きていません。", en:"After the contrast dye is injected, you may feel as if you’ve wet yourself, but it’s just a sensation. Nothing actually happened."},
- {preview:"これまでに造影剤で何か副…", jp:"これまでに造影剤で何か副作用が出たことはありますか？", en:"Have you ever had any side effects with contrast dye before?"},
- {preview:"これから造影剤注入用のチ…", jp:"これから造影剤注入用のチューブを交換します。", en:"We’re going to change the tube for the contrast dye injection."},
- {preview:"アルコール消毒で、皮膚の…", jp:"アルコール消毒で、皮膚のかぶれやアレルギーが出たことはありますか？", en:"Have you ever had any skin reactions or allergies to alcohol wipes?"},
- {preview:"交換する際に、針が少し動…", jp:"交換する際に、針が少し動くことがあるので、少し痛みを感じるかもしれません。", en:"You might feel a little pain while we’re changing it, because the needle might move slightly."},
- {preview:"点滴のラインを確認するた…", jp:"点滴のラインを確認するために、少量のお水を流します。もし痛みがあれば教えてください。", en:"I’ll flush a little bit of water to check the IV line. Please tell us if it hurts."}
-];
-  const sel = document.getElementById('stepSelect');
-  const jpText = document.getElementById('jpText');
-  const enText = document.getElementById('enText');
-  const player = document.getElementById('player');
-  const statusEl = document.getElementById('status');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const playBtn = document.getElementById('playBtn');
-  const pauseBtn = document.getElementById('pauseBtn');
-  const replayBtn = document.getElementById('replayBtn');
+  <p class="note">
+    翻訳結果には誤りが含まれる場合があります。使用する前に、内容を必ず確認してください。</div>
+  </p>
+</div>
 
-  function setStatus(s){ statusEl.textContent = s; }
-  function getIndexById(id){ return STEPS.findIndex(s => s.id === id); }
+<link rel="stylesheet" href="translator.css">
+<script src="translator.js"></script>
 
-  function loadStepByIndex(i){
-    if(i < 0) i = 0;
-    if(i >= STEPS.length) i = STEPS.length - 1;
-    const step = STEPS[i];
-    sel.value = step.id;
-    jpText.textContent = step.jp || "";
-    enText.textContent = step.en || "";
-    player.src = step.audio;
-    player.currentTime = 0;
-    setStatus('待機中 / Ready');
-    prevBtn.disabled = (i === 0);
-    nextBtn.disabled = (i === STEPS.length - 1);
-  }
 
-  sel.addEventListener('change', () => loadStepByIndex(getIndexById(sel.value)));
-  prevBtn.addEventListener('click', () => loadStepByIndex(getIndexById(sel.value) - 1));
-  nextBtn.addEventListener('click', () => loadStepByIndex(getIndexById(sel.value) + 1));
+<div class="page-footer">
+  <hr>
+  <p class="creator">
+    作成：上地 慶知<br>
+    所属：放射線課
+  </p>
+  <p class="creator-en">
+    Created by Yoshitomo Uechi<br>
+    Department of Radiology
+  </p>
+</div>
 
-  playBtn.addEventListener('click', async () => {
-    try { await player.play(); } catch(e) {
-      alert('再生できませんでした。音量/消音モード/ブラウザ設定を確認してください。');
-    }
-  });
-
-  pauseBtn.addEventListener('click', () => player.pause());
-
-  replayBtn.addEventListener('click', async () => {
-    try { player.currentTime = 0; await player.play(); } catch(e) {
-      alert('再生できませんでした。');
-    }
-  });
-
-  player.addEventListener('play', () => setStatus('再生中 / Playing'));
-  player.addEventListener('pause', () => setStatus('一時停止 / Paused'));
-  player.addEventListener('ended', () => setStatus('待機中 / Ready'));
-
-  loadStepByIndex(0);
-</script>
+<div id="toast" class="toast"></div>
 </body>
-</html>
+</html><a class="card" href="https://orinndo.github.io/patient-entry/">
+      <div class="num">01</div>
+      <div class="texts">
+        <div class="jp">患者入室</div>
+        <div class="en">Patient Entry</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/ECG-BP-Positioning/">
+      <div class="num">02</div>
+      <div class="texts">
+        <div class="jp">心電図・血圧測定・息止め練習・ポジショニング</div>
+        <div class="en">ECG, Blood Pressure, Breath-hold Practice & Positioning</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/ABL/">
+      <div class="num">03</div>
+      <div class="texts">
+        <div class="jp">ABL前検査の場合</div>
+        <div class="en">Pre-ABL Examination</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/nitropen-sublingual/">
+      <div class="num">04</div>
+      <div class="texts">
+        <div class="jp">ニトロペン（舌下投与）</div>
+        <div class="en">Nitropen Sublingual Administration</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/explanation-of-contrast-dye-/">
+      <div class="num">05</div>
+      <div class="texts">
+        <div class="jp">造影剤の説明</div>
+        <div class="en">Explanation of Contrast Dye</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/IV-access/">
+      <div class="num">06</div>
+      <div class="texts">
+        <div class="jp">点滴ルート確保</div>
+        <div class="en">IV Access</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/corebeta-injection/">
+      <div class="num">07</div>
+      <div class="texts">
+        <div class="jp">コアベータ投与</div>
+        <div class="en">Corebeta Injection</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/test-injection-guide/">
+      <div class="num">08</div>
+      <div class="texts">
+        <div class="jp">テスト注入</div>
+        <div class="en">Test Injection Guide</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/actual-injection/">
+      <div class="num">09</div>
+      <div class="texts">
+        <div class="jp">撮影本番</div>
+        <div class="en">Actual Injection</div>
+      </div>
+    </a>
+<a class="card" href="https://orinndo.github.io/after-the-exam/">
+      <div class="num">10</div>
+      <div class="texts">
+        <div class="jp">検査終了後</div>
+        <div class="en">After the Exam</div>
+      </div>
+    </a>
+
