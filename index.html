@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>造影剤の説明・チューブ接続（Contrast Dye & IV Tube）音声ガイド</title>
+<title>静脈路の確保（IV Line Placement）音声ガイド</title>
 <style>
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
 background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
@@ -29,7 +29,7 @@ audio{width:100%;margin-top:10px;}
 <body>
 <div class="header">
   <div class="frame-title">
-    <h1>造影剤の説明・チューブ接続（Contrast Dye & IV Tube）</h1>
+    <h1>静脈路の確保（IV Line Placement）</h1>
     <p>English Audio Guide</p>
   </div>
 </div>
@@ -65,15 +65,16 @@ audio{width:100%;margin-top:10px;}
 
 <script>
 const STEPS = [
- {preview:"造影剤の説明…", jp:"これから造影剤について説明します。", en:"I'll walk you through the contrast dye now."},
- {preview:"温かく感じる…", jp:"造影剤を注射すると、血管の圧の影響で体が温かく感じることがあります。", en:"When the contrast dye is injected into your vein, you might feel warm sensation throughout your body due to the pressure in your blood vessels."},
- {preview:"すぐ治まる…", jp:"みなさん同じように感じますが、すぐにおさまるので心配いりません。", en:"Everyone feels the same way, and it will go away soon, so please don’t worry."},
- {preview:"濡れた感じ…", jp:"造影剤の後、尿漏れしたように感じることがありますが、感覚だけです。実際には何も起きていません。", en:"After the contrast dye is injected, you may feel as if you’ve wet yourself, but it’s just a sensation. Nothing actually happened."},
- {preview:"副作用の経験…", jp:"以前、造影剤で副作用が出たことはありますか？", en:"Have you ever had any side effects with contrast dye before?"},
- {preview:"チューブ交換…", jp:"造影剤を注入するためのチューブを交換しますね。", en:"We’re going to change the tube for the contrast dye injection."},
- {preview:"消毒アレルギー…", jp:"アルコール綿（消毒）で皮膚のかぶれやアレルギーはありますか？", en:"Have you ever had any skin reactions or allergies to alcohol wipes?"},
- {preview:"少し痛むかも…", jp:"交換している間、針が少し動くことがあるので、少し痛むかもしれません。", en:"You might feel a little pain while we’re changing it, because the needle might move slightly."},
- {preview:"ルート確認…", jp:"点滴ルートの確認のため、少しお水を流します。痛ければ教えてください。", en:"I’ll flush a little bit of water to check the IV line. Please tell us if it hurts."}
+ {preview:"この点滴は米海軍病院で？", jp:"この点滴ルートは米海軍病院で入れましたか？", en:"Was this IV line placed at the U.S. Naval Hospital?"},
+ {preview:"念のため入れ直します…", jp:"この点滴ルートが注入圧に耐えられるか分からないので、念のため新しく入れ直します。", en:"We’re not sure if this IV line can withstand the injection pressure, so just to be safe, we’ll insert a new one."},
+ {preview:"駆血帯を巻きます…", jp:"上腕に駆血帯を巻きます。血管を確認しますね。", en:"I’ll place a tourniquet on your upper arm. Let me check your veins."},
+ {preview:"手を握って…", jp:"手を握って、数秒そのままにしてください。", en:"Please make a fist and hold it for a few seconds."},
+ {preview:"アルコールで消毒…", jp:"アルコールで消毒します。アルコールでかぶれたりアレルギーはありますか？", en:"I’ll clean the area with alcohol. Do you have any allergies or skin reactions to alcohol?"},
+ {preview:"少し圧迫感や…", jp:"入れるときに少し圧迫感やしみる感じがするかもしれません。", en:"You might feel a little pressure or sting during the insertion."},
+ {preview:"腕を動かさないで…", jp:"腕を動かさないでください。", en:"Please keep your arm still."},
+ {preview:"今から針を入れます…", jp:"今から針を入れます。少しチクッとするかもしれません。", en:"I’ll insert the needle now. You might feel a quick pinch."},
+ {preview:"入りました…", jp:"入りました。ちゃんと通っているか確認のためにフラッシュしますね。", en:"It’s in. I’ll flush it to make sure it’s working."},
+ {preview:"問題なく入っています…", jp:"問題なく入っています。", en:"It looks good."}
 ];
 
 const sel=document.getElementById('sel'),
