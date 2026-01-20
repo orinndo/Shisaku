@@ -1,40 +1,51 @@
-const ta = document.getElementById('jpText');
-const copyBtn = document.getElementById('copyInputBtn');
 
-// restore text
-ta.value = localStorage.getItem('jpText') || '';
+const fab=document.getElementById("fab");
+const panel=document.getElementById("panel");
+const overlay=document.getElementById("overlay");
 
-// save on input
-ta.addEventListener('input', () => {
-  localStorage.setItem('jpText', ta.value);
-});
+fab.onclick=()=>{ panel.classList.remove("hidden"); overlay.classList.remove("hidden"); };
+overlay.onclick=()=>{ panel.classList.add("hidden"); overlay.classList.add("hidden"); };
 
-// copy
-copyBtn.addEventListener('click', () => {
-  if (!ta.value) return;
-  navigator.clipboard.writeText(ta.value);
-  copyBtn.textContent = '✓ コピーしました';
-  setTimeout(() => {
-    copyBtn.textContent = '📋 入力文をコピー';
-  }, 1500);
-});
-
-// open translators
-document.querySelectorAll('.translator-buttons button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const text = ta.value;
-    if (!text) return;
-
-    const type = btn.dataset.t;
-    let url = '';
-    if (type === 'google') {
-      url = 'https://translate.google.com/?sl=ja&tl=en&text=' + encodeURIComponent(text);
-    } else if (type === 'deepl') {
-      url = 'https://www.deepl.com/translator#ja/en/' + encodeURIComponent(text);
-    } else if (type === 'gemini') {
-      navigator.clipboard.writeText(text);
-      url = 'https://gemini.google.com/';
+document.querySelectorAll("#panel .btns button").forEach(btn=>{
+  btn.onclick=()=>{
+    const text=document.getElementById("jp").value.trim();
+    if(!text) return;
+    const type=btn.dataset.t;
+    if(type==="google"){
+      window.open("https://translate.google.com/?sl=ja&tl=en&text="+encodeURIComponent(text),"_blank");
     }
-    window.open(url, '_blank');
-  });
+    if(type==="deepl"){
+      window.open("https://www.deepl.com/translator#ja/en/"+encodeURIComponent(text),"_blank");
+    }
+    if(type==="gemini"){
+      navigator.clipboard.writeText(text);
+      window.open("https://gemini.google.com/","_blank");
+    }
+  };
 });
+
+document.getElementById('copyInputBtn')?.addEventListener('click',()=>{
+  const t=document.getElementById('jpText').value;
+  if(!t) return;
+  navigator.clipboard.writeText(t);
+  const toast=document.getElementById('toast');
+  toast.textContent='コピーしました';
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),1200);
+});
+
+// ---- Persist input text across navigation ----
+(function(){
+  const KEY = 'translator_input_jp';
+  const ta = document.getElementById('jpText');
+  if(!ta) return;
+
+  // restore
+  const saved = localStorage.getItem(KEY);
+  if(saved) ta.value = saved;
+
+  // save on input
+  ta.addEventListener('input', ()=>{
+    localStorage.setItem(KEY, ta.value);
+  });
+})();
