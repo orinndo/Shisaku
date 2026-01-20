@@ -3,203 +3,111 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>造影剤の説明・チューブ接続</title>
+<title>造影剤の説明・チューブ接続（Contrast Dye & IV Tube）音声ガイド</title>
 <style>
-body {
- margin:0;
- font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
- background:linear-gradient(180deg,#f7fbff,#eef6ff);
- color:#0f172a;
-}
-.header {
- padding:18px;
-}
-.header h1 { margin:0 0 6px; font-size:22px; }
-.header p { margin:0; font-size:13px; color:#475569; }
-.container { padding:10px 14px 24px; }
-.card {
- display:flex;
- align-items:center;
- padding:16px;
- margin-bottom:14px;
- background:#ffffff;
- border:1px solid #e2e8f0;
- border-radius:16px;
- text-decoration:none;
- color:#0f172a;
- box-shadow:0 8px 18px rgba(15,23,42,0.06);
-}
-.num {
- font-size:18px;
- font-weight:700;
- width:40px;
- height:40px;
- border-radius:12px;
- display:flex;
- align-items:center;
- justify-content:center;
- background:linear-gradient(135deg,#93c5fd,#38bdf8);
- color:#ffffff;
- margin-right:14px;
-}
-.jp { font-size:16px; font-weight:600; }
-.en { font-size:13px; color:#475569; margin-top:2px; }
-.card:active { transform:scale(.98); }
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
+.header{padding:18px 16px 10px;}
+.frame-title{border:2px solid #38bdf8;padding:14px 16px;border-radius:14px;background:#f8fcff;text-align:center;}
+.frame-title h1{margin:0;font-size:20px;}
+.frame-title p{margin:6px 0 0;font-size:14px;color:#475569;}
+.note{font-size:12px;color:#475569;margin:12px 16px;}
+.main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
+button:active{transform:scale(.98);}
+.label{margin-top:14px;font-size:13px;color:#475569;}
+.jp{font-size:18px;font-weight:600;margin-top:6px;}
+.en{font-size:16px;margin-top:4px;}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+audio{width:100%;margin-top:10px;}
+.status{margin-top:8px;font-size:13px;color:#475569;}
+.hint{margin-top:10px;font-size:12px;color:#64748b;}
 </style>
 </head>
 <body>
 <div class="header">
-  
-
-
-<div class="header-title frame-title">
-  <h1 class="main-title">
-    冠動脈造影CT検査<br>
-    <span class="sub-title">英語音声ガイド</span>
-  </h1>
-  <p class="en-title">
-    Coronary CT Angiography – English Audio Guide
-  </p>
-</div>
-
-
-  <div>
-    
+  <div class="frame-title">
+    <h1>造影剤の説明・チューブ接続（Contrast Dye & IV Tube）</h1>
+    <p>English Audio Guide</p>
   </div>
 </div>
 
-</div>
-<div class="container">
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</div>
+<p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
 
-<!-- 翻訳ツール：＋ボタン -->
-<button id="fab">＋</button>
-
-<!-- 翻訳ツール：オーバーレイ -->
-<div id="overlay" class="hidden"></div>
-
-<!-- 翻訳ツール：パネル -->
-<div id="panel" class="hidden">
-  <h2>翻訳ツール</h2>
-<div class="translator-glass">
-  <textarea id="jp" placeholder="日本語を入力してください"></textarea>
-
-  <div class="btns">
-    <button data-t="google">Google翻訳</button>
-    <button data-t="deepl">DeepL</button>
-    <button data-t="gemini">Gemini</button>
+<div class="main">
+  <div class="row">
+    <select id="sel"></select>
+    <button id="prev">← 前</button>
+    <button id="next">次 →</button>
   </div>
 
-  <p class="note">
-    翻訳結果には誤りが含まれる場合があります。使用する前に、内容を必ず確認してください。</div>
-  </p>
+  <div class="label">日本語（内容）</div>
+  <div class="jp" id="jp"></div>
+
+  <div class="label">English (Script)</div>
+  <div class="en" id="en"></div>
+
+  <div class="controls">
+    <button id="play">▶︎ 再生</button>
+    <button id="pause">⏸ 一時停止</button>
+    <button id="replay">↻ もう一度</button>
+  </div>
+
+  <div class="status" id="status">待機中 / Ready</div>
+  <audio id="player" controls></audio>
+
+  <div class="hint">
+    再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
+  </div>
 </div>
 
-<link rel="stylesheet" href="translator.css">
-<script src="translator.js"></script>
+<script>
+const STEPS = [
+ {preview:"造影剤の説明…", jp:"これから造影剤について説明します。", en:"I'll walk you through the contrast dye now."},
+ {preview:"温かく感じる…", jp:"造影剤を注射すると、血管の圧の影響で体が温かく感じることがあります。", en:"When the contrast dye is injected into your vein, you might feel warm sensation throughout your body due to the pressure in your blood vessels."},
+ {preview:"すぐ治まる…", jp:"みなさん同じように感じますが、すぐにおさまるので心配いりません。", en:"Everyone feels the same way, and it will go away soon, so please don’t worry."},
+ {preview:"濡れた感じ…", jp:"造影剤の後、尿漏れしたように感じることがありますが、感覚だけです。実際には何も起きていません。", en:"After the contrast dye is injected, you may feel as if you’ve wet yourself, but it’s just a sensation. Nothing actually happened."},
+ {preview:"副作用の経験…", jp:"以前、造影剤で副作用が出たことはありますか？", en:"Have you ever had any side effects with contrast dye before?"},
+ {preview:"チューブ交換…", jp:"造影剤を注入するためのチューブを交換しますね。", en:"We’re going to change the tube for the contrast dye injection."},
+ {preview:"消毒アレルギー…", jp:"アルコール綿（消毒）で皮膚のかぶれやアレルギーはありますか？", en:"Have you ever had any skin reactions or allergies to alcohol wipes?"},
+ {preview:"少し痛むかも…", jp:"交換している間、針が少し動くことがあるので、少し痛むかもしれません。", en:"You might feel a little pain while we’re changing it, because the needle might move slightly."},
+ {preview:"ルート確認…", jp:"点滴ルートの確認のため、少しお水を流します。痛ければ教えてください。", en:"I’ll flush a little bit of water to check the IV line. Please tell us if it hurts."}
+];
 
+const sel=document.getElementById('sel'),
+jp=document.getElementById('jp'),
+en=document.getElementById('en'),
+player=document.getElementById('player'),
+status=document.getElementById('status');
 
-<div class="page-footer">
-  <hr>
-  <p class="creator">
-    作成：上地 慶知<br>
-    所属：放射線課
-  </p>
-  <p class="creator-en">
-    Created by Yoshitomo Uechi<br>
-    Department of Radiology
-  </p>
-</div>
+STEPS.forEach((s,i)=>{
+ const o=document.createElement('option');
+ o.value=i;
+ o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
+ sel.appendChild(o);
+});
 
-<div id="toast" class="toast"></div>
+let idx=0;
+function load(i){
+ idx=Math.max(0,Math.min(STEPS.length-1,i));
+ sel.value=idx;
+ jp.textContent=STEPS[idx].jp;
+ en.textContent=STEPS[idx].en;
+ player.src=`audio/step_${String(idx+1).padStart(2,'0')}.m4a`;
+ status.textContent="待機中 / Ready";
+}
+sel.onchange=()=>load(parseInt(sel.value));
+document.getElementById('prev').onclick=()=>load(idx-1);
+document.getElementById('next').onclick=()=>load(idx+1);
+document.getElementById('play').onclick=()=>player.play();
+document.getElementById('pause').onclick=()=>player.pause();
+document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
+player.onplay=()=>status.textContent="再生中 / Playing";
+player.onpause=()=>status.textContent="一時停止 / Paused";
+player.onended=()=>status.textContent="待機中 / Ready";
+load(0);
+</script>
 </body>
-</html><a class="card" href="https://orinndo.github.io/patient-entry/">
-      <div class="num">01</div>
-      <div class="texts">
-        <div class="jp">患者入室</div>
-        <div class="en">Patient Entry</div>
-      </div>
-    </a>
-<a class="card" href="https://orinndo.github.io/ECG-BP-Positioning/">
-      <div class="num">02</div>
-      <div class="texts">
-        <div class="jp">心電図・血圧測定・息止め練習・ポジショニング</div>
-        <div class="en">ECG, Blood Pressure, Breath-hold Practice & Positioning</div>
-      </div>
-    </a>
-<a class="card" href="https://orinndo.github.io/ABL/">
-      <div class="num">03</div>
-      <div class="texts">
-        <div class="jp">ABL前検査の場合</div>
-        <div class="en">Pre-ABL Examination</div>
-      </div>
-    </a>
-<a class="card" href="https://orinndo.github.io/nitropen-sublingual/">
-      <div class="num">04</div>
-      <div class="texts">
-        <div class="jp">ニトロペン（舌下投与）</div>
-        <div class="en">Nitropen Sublingual Administration</div>
-      </div>
-    </a>
-<a class="card" href="https://orinndo.github.io/explanation-of-contrast-dye-/">
-      <div class="num">05</div>
-      <div class="texts">
-        <div class="jp">造影剤の説明</div>
-        <div class="en">Explanation of Contrast Dye</div>
-      </div>
-    </a>
-<a class="card" href="https://orinndo.github.io/IV-access/">
-      <div class="num">06</div>
-      <div class="texts">
-        <div class="jp">点滴ルート確保</div>
-        <div class="en">IV Access</div>
-      </div>
-    </a>
-<a class="card" href="https://orinndo.github.io/corebeta-injection/">
-      <div class="num">07</div>
-      <div class="texts">
-        <div class="jp">コアベータ投与</div>
-        <div class="en">Corebeta Injection</div>
-      </div>
-    </a>
-<a class="card" href="https://orinndo.github.io/test-injection-guide/">
-      <div class="num">08</div>
-      <div class="texts">
-        <div class="jp">テスト注入</div>
-        <div class="en">Test Injection Guide</div>
-      </div>
-    </a>
-<a class="card" href="https://orinndo.github.io/actual-injection/">
-      <div class="num">09</div>
-      <div class="texts">
-        <div class="jp">撮影本番</div>
-        <div class="en">Actual Injection</div>
-      </div>
-    </a>
-<a class="card" href="https://orinndo.github.io/after-the-exam/">
-      <div class="num">10</div>
-      <div class="texts">
-        <div class="jp">検査終了後</div>
-        <div class="en">After the Exam</div>
-      </div>
-    </a>
-
+</html>
