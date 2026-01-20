@@ -73,6 +73,8 @@
       url = `https://www.deepl.com/translator#ja/en/${q}`;
     }else if(t === 'gemini'){
       url = 'https://gemini.google.com/';
+    }else if(t === 'chatgpt'){
+      url = 'https://gemini.google.com/';
     }
     window.open(url, '_blank', 'noopener');
   });
