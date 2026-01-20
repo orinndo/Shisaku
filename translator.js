@@ -74,7 +74,7 @@
     }else if(t === 'gemini'){
       url = 'https://gemini.google.com/';
     }else if(t === 'chatgpt'){
-      url = 'https://gemini.google.com/';
+      url = 'https://chat.openai.com/';
     }
     window.open(url, '_blank', 'noopener');
   });
