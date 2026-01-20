@@ -3,122 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>検査終了後（After the Exam）音声ガイド</title>
+<title>翻訳ツール</title>
 <style>
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
-background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
-.header{padding:18px 16px 10px;}
-.frame-title{border:2px solid #38bdf8;padding:14px 16px;border-radius:14px;background:#f8fcff;text-align:center;}
-.frame-title h1{margin:0;font-size:20px;}
-.frame-title p{margin:6px 0 0;font-size:14px;color:#475569;}
-.note{font-size:12px;color:#475569;margin:12px 16px;}
-.main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
-button:active{transform:scale(.98);}
-.label{margin-top:14px;font-size:13px;color:#475569;}
-.jp{font-size:18px;font-weight:600;margin-top:6px;}
-.en{font-size:16px;margin-top:4px;}
-.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
-audio{width:100%;margin-top:10px;}
-.status{margin-top:8px;font-size:13px;color:#475569;}
-.hint{margin-top:10px;font-size:12px;color:#64748b;}
+body {
+ margin:0;
+ font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+ background:#f7fbff;
+}
+.translator-glass {
+ margin:16px;
+ padding:16px;
+ border-radius:16px;
+ background:#fff;
+ border:1px solid #cbd5e1;
+}
+textarea {
+ width:100%;
+ min-height:160px;
+ padding:16px;
+ box-sizing:border-box;
+ font-size:16px;
+ border-radius:12px;
+ border:1px solid #94a3b8;
+}
 </style>
 </head>
 <body>
-<div class="header">
-  <div class="frame-title">
-    <h1>検査終了後（After the Exam）</h1>
-    <p>English Audio Guide</p>
-  </div>
+<div class="translator-glass">
+<textarea placeholder="日本語を入力してください"></textarea>
 </div>
-
-<p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
-
-<div class="main">
-  <div class="row">
-    <select id="sel"></select>
-    <button id="prev">← 前</button>
-    <button id="next">次 →</button>
-  </div>
-
-  <div class="label">日本語（内容）</div>
-  <div class="jp" id="jp"></div>
-
-  <div class="label">English (Script)</div>
-  <div class="en" id="en"></div>
-
-  <div class="controls">
-    <button id="play">▶︎ 再生</button>
-    <button id="pause">⏸ 一時停止</button>
-    <button id="replay">↻ もう一度</button>
-  </div>
-
-  <div class="status" id="status">待機中 / Ready</div>
-  <audio id="player" controls></audio>
-
-  <div class="hint">
-    再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
-  </div>
-</div>
-
-<script>
-const STEPS = [
- {preview:"検査は終わりました。今からベッド…", jp:"検査は終わりました。今からベッドを装置の外へ出しますね。", en:"The scan is finished. I’ll move the bed out of the scanner now."},
- {preview:"ベルトを外しますね。", jp:"ベルトを外しますね。", en:"I’ll take off the belt now."},
- {preview:"血圧を測りますね。", jp:"血圧を測りますね。", en:"I’ll take your blood pressure."},
- {preview:"造影剤アレルギーがないか確認する…", jp:"造影剤アレルギーがないか確認するため、30分ほど院内で待機をお願いします。", en:"We ask that you stay in the hospital for thirty minutes, so we can make sure you don’t have any allergic reactions to the contrast dye."},
- {preview:"待っている間、トイレは行って大丈…", jp:"待っている間、トイレは行って大丈夫ですが、飲食は控えてください。", en:"While you’re waiting, it’s okay to use the restroom, but please avoid eating or drinking."},
- {preview:"気分が悪くなったら、すぐ教えてく…", jp:"気分が悪くなったら、すぐ教えてください。", en:"If you feel sick, please tell us immediately."},
- {preview:"今、吐き気・めまい・かゆみ・息苦…", jp:"今、吐き気・めまい・かゆみ・息苦しさなどの症状はありますか？", en:"Are you experiencing any symptoms such as nausea, dizziness, itching, and shortness of breath right now?"},
- {preview:"待機が終わったら、造影剤を体から…", jp:"待機が終わったら、造影剤を体から出すために、普段より多めに水分をとって、何回か排尿してください。", en:"After the waiting period, please drink more water than usual and urinate several times to help flush the contrast dye out of your body."},
- {preview:"水でなくても構いませんが、アルコ…", jp:"水でなくても構いませんが、アルコールは避けてください。", en:"It doesn’t have to be water, but please avoid alcohol."},
- {preview:"まれに数日後に副作用が出ることが…", jp:"まれに数日後に副作用が出ることがあります。体調が悪くなったら、すぐご連絡ください。", en:"In rare cases, side effects may appear a few days later. If you start to feel unwell, please let us know right away."},
- {preview:"心電図を外しますね。", jp:"心電図を外しますね。", en:"I’ll remove the ECG now."},
- {preview:"女性スタッフが心電図を外します。", jp:"女性スタッフが心電図を外します。", en:"A female staff member will remove the ECG."},
- {preview:"ベッドが下がります。", jp:"ベッドが下がります。", en:"The bed will go down."},
- {preview:"完全に下がりきるまで動かないでく…", jp:"完全に下がりきるまで動かないでください。", en:"Please stay still until it is completely lowered."},
- {preview:"ゆっくり起き上がってください。", jp:"ゆっくり起き上がってください。", en:"Please sit up slowly."},
- {preview:"車いすに移りましょう。", jp:"車いすに移りましょう。", en:"Let’s move to the wheelchair."},
- {preview:"ゆっくり立ち上がって、車いすに座…", jp:"ゆっくり立ち上がって、車いすに座ってください。", en:"Please stand up slowly and sit on the wheelchair."},
- {preview:"背中の後ろにスライダーボードを入…", jp:"背中の後ろにスライダーボードを入れますね。", en:"I’ll put a slider board behind your back."},
- {preview:"今からベッドへ移しますね。", jp:"今からベッドへ移しますね。", en:"I’ll slide you onto the bed now."},
- {preview:"お大事にしてください。", jp:"お大事にしてください。", en:"Please take care of yourself."}
-];
-
-const sel=document.getElementById('sel'),
-jp=document.getElementById('jp'),
-en=document.getElementById('en'),
-player=document.getElementById('player'),
-status=document.getElementById('status');
-
-STEPS.forEach((s,i)=>{
- const o=document.createElement('option');
- o.value=i;
- o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
- sel.appendChild(o);
-});
-
-let idx=0;
-function load(i){
- idx=Math.max(0,Math.min(STEPS.length-1,i));
- sel.value=idx;
- jp.textContent=STEPS[idx].jp;
- en.textContent=STEPS[idx].en;
- player.src=`audio/step_${String(idx+1).padStart(2,'0')}.m4a`;
- status.textContent="待機中 / Ready";
-}
-sel.onchange=()=>load(parseInt(sel.value));
-document.getElementById('prev').onclick=()=>load(idx-1);
-document.getElementById('next').onclick=()=>load(idx+1);
-document.getElementById('play').onclick=()=>player.play();
-document.getElementById('pause').onclick=()=>player.pause();
-document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
-player.onplay=()=>status.textContent="再生中 / Playing";
-player.onpause=()=>status.textContent="一時停止 / Paused";
-player.onended=()=>status.textContent="待機中 / Ready";
-load(0);
-</script>
 </body>
 </html>
