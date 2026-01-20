@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ABL前検査の場合</title>
+<title>造影剤の説明・チューブ接続</title>
 <style>
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
 background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
@@ -14,8 +14,7 @@ background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
 .note{font-size:12px;color:#475569;margin:12px 16px;}
 .main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;
-overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
 button:active{transform:scale(.98);}
 .label{margin-top:14px;font-size:13px;color:#475569;}
@@ -30,58 +29,84 @@ audio{width:100%;margin-top:10px;}
 <body>
 <div class="header">
   <div class="frame-title">
-    <h1>ABL前検査の場合</h1>
+    <h1>患者入室（Patient Entry）</h1>
     <p>English Audio Guide</p>
   </div>
 </div>
+
 <p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
+
 <div class="main">
   <div class="row">
     <select id="sel"></select>
     <button id="prev">← 前</button>
     <button id="next">次 →</button>
   </div>
+
   <div class="label">日本語（内容）</div>
   <div class="jp" id="jp"></div>
+
   <div class="label">English (Script)</div>
   <div class="en" id="en"></div>
+
   <div class="controls">
     <button id="play">▶︎ 再生</button>
     <button id="pause">⏸ 一時停止</button>
     <button id="replay">↻ もう一度</button>
   </div>
+
   <div class="status" id="status">待機中 / Ready</div>
   <audio id="player" controls></audio>
-  <div class="hint">再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。</div>
+
+  <div class="hint">
+    再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
+  </div>
 </div>
+
 <script>
-const STEPS = [{'preview': 'この検査では、可能であればう…', 'jp': 'この検査では、可能であればうつ伏せになっていただきます。', 'en': "During this test, we'd like you to lie on your stomach if possible."}, {'preview': 'もしきつければ、仰向けのほう…', 'jp': 'もしきつければ、仰向けのほうが楽なら仰向けでも大丈夫です。', 'en': "If that's too uncomfortable, you can also lie on your back if it feels easier."}, {'preview': 'どちらがよろしいですか？', 'jp': 'どちらがよろしいですか？', 'en': 'Which would you prefer?'}, {'preview': '少しの間、うつ伏せになれるか…', 'jp': '少しの間、うつ伏せになれるか試してみてもいいですか？', 'en': 'Could you try lying on your stomach for a moment?'}, {'preview': 'ベッドにうつ伏せになってくだ…', 'jp': 'ベッドにうつ伏せになってください。頭はここ、足はあちらです。', 'en': 'Please lie on your stomach on the bed. Your head goes here, and your feet go there.'}, {'preview': 'この姿勢でお顔はつらくないで…', 'jp': 'この姿勢でお顔はつらくないですか？呼吸は苦しくないですか？', 'en': 'Is your face comfortable in this position? Are you breathing okay?'}, {'preview': '息がしにくければ、頭を左右ど…', 'jp': '息がしにくければ、頭を左右どちらかに向けても大丈夫です。', 'en': "If it's hard to breathe, you can turn your head to either side."}, {'preview': '今の感じはいかがですか？', 'jp': '今の感じはいかがですか？', 'en': 'How does it feel now?'}, {'preview': '本番の撮影はこの姿勢で行いま…', 'jp': '本番の撮影はこの姿勢で行いますが、大丈夫ですか？', 'en': "We'll do the actual scan in this position, is that okay?"}, {'preview': 'では、いったんベッドに起き上…', 'jp': 'では、いったんベッドに起き上がって座ってください。血圧を測って、背中に心電図を貼ります。', 'en': "Okay, then could you sit up on the bed for a moment, please? I'll check your blood pressure and put the ECG electrodes on your back."}, {'preview': 'では、先ほどと同じように、も…', 'jp': 'では、先ほどと同じように、もう一度うつ伏せになってください。', 'en': 'All right. Please lie on your stomach again, just like before.'}, {'preview': '撮影中は、息止めを約10秒行…', 'jp': '撮影中は、息止めを約10秒行います。息を吐いて止めるのを1回、息を吸って止めるのを1回です。', 'en': 'During the scan, you will be asked to hold your breath for about 10 seconds - once after breathing out, and once after breathing in.'}, {'preview': 'では、一緒に練習してみましょ…', 'jp': 'では、一緒に練習してみましょう。', 'en': "Let's practice together now."}, {'preview': '大きく息を吸って、吐いてから…', 'jp': '大きく息を吸って、吐いてから止めてください。', 'en': 'Take a deep breath, breathe out, and hold it.'}, {'preview': '楽にしてください。', 'jp': '楽にしてください。', 'en': 'You can relax now.'}, {'preview': '息止めの後は、体を動かさない…', 'jp': '息止めの後は、体を動かさないでください。', 'en': 'As you did just now, please stay still after you hold your breath.'}, {'preview': 'それでは撮影を開始します。', 'jp': 'それでは撮影を開始します。', 'en': "we'll start the scan now."}];
-const sel=document.getElementById('sel'),jpEl=document.getElementById('jp'),enEl=document.getElementById('en'),player=document.getElementById('player'),status=document.getElementById('status');
+const STEPS = [
+ {preview:"造影剤を注射します…", jp:"これから、腕の点滴を通して造影剤を注射します。", en:"We will inject contrast dye through the IV in your arm."},
+ {preview:"はっきり見えるため…", jp:"それによって、血管や臓器をよりはっきりと見ることができます。", en:"It helps us see your blood vessels and organs more clearly."},
+ {preview:"体が温かく…", jp:"造影剤を注射すると、体が温かく感じることがあります。", en:"When we inject the contrast, you may feel warm."},
+ {preview:"味や尿意…", jp:"口の中に金属のような味を感じたり、尿意を感じたりすることがあります。", en:"You may notice a metallic taste or feel like you need to urinate."},
+ {preview:"正常な反応…", jp:"これは正常な反応です。", en:"This is normal."},
+ {preview:"気分が悪い時…", jp:"もし気分が悪くなったり、吐き気がしたりした場合は、すぐに教えてください。", en:"If you feel sick or nauseated, please tell us right away."},
+ {preview:"チューブ接続…", jp:"今から、点滴のラインにチューブを接続します。", en:"Now we will connect the tube to your IV line."},
+ {preview:"少しチクッと…", jp:"少しチクッと感じるかもしれません。", en:"You may feel a small pinch."},
+ {preview:"腕を動かさず…", jp:"点滴が入っている腕は、できるだけ動かさないでください。", en:"Please keep the arm with the IV still."}
+];
+
+const sel=document.getElementById('sel'),
+jp=document.getElementById('jp'),
+en=document.getElementById('en'),
+player=document.getElementById('player'),
+status=document.getElementById('status');
+
 STEPS.forEach((s,i)=>{
-  const o=document.createElement('option');
-  o.value=i;
-  // プルダウンを開いた時は全文が見える（閉じた時はellipsisで省略）
-  o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
-  sel.appendChild(o);
+ const o=document.createElement('option');
+ o.value=i;
+ o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
+ sel.appendChild(o);
 });
+
 let idx=0;
 function load(i){
-  idx=Math.max(0,Math.min(STEPS.length-1,i));
-  sel.value=idx;
-  jpEl.textContent=STEPS[idx].jp;
-  enEl.textContent=STEPS[idx].en;
-  player.src=`audio/step_${String(idx+1).padStart(2,'0')}.m4a`;
-  status.textContent='待機中 / Ready';
+ idx=Math.max(0,Math.min(STEPS.length-1,i));
+ sel.value=idx;
+ jp.textContent=STEPS[idx].jp;
+ en.textContent=STEPS[idx].en;
+ player.src=`audio/step_${String(idx+1).padStart(2,'0')}.m4a`;
+ status.textContent="待機中 / Ready";
 }
 sel.onchange=()=>load(parseInt(sel.value));
 document.getElementById('prev').onclick=()=>load(idx-1);
 document.getElementById('next').onclick=()=>load(idx+1);
 document.getElementById('play').onclick=()=>player.play();
 document.getElementById('pause').onclick=()=>player.pause();
-document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();};
-player.onplay=()=>status.textContent='再生中 / Playing';
-player.onpause=()=>status.textContent='一時停止 / Paused';
-player.onended=()=>status.textContent='待機中 / Ready';
+document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
+player.onplay=()=>status.textContent="再生中 / Playing";
+player.onpause=()=>status.textContent="一時停止 / Paused";
+player.onended=()=>status.textContent="待機中 / Ready";
 load(0);
 </script>
 </body>
