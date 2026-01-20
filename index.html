@@ -3,95 +3,33 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>冠動脈造影CT検査 英語音声ガイド</title>
+<title>音声ガイド + 翻訳ツール</title>
 <link rel="stylesheet" href="translator.css">
-<style>
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
-  background:linear-gradient(180deg,#f7fbff,#eef6ff);
-  color:#0f172a;
-}
-.header{ padding:20px 18px 12px; }
-.header h1{ margin:0 0 6px; font-size:22px; }
-.header p{ margin:0; font-size:14px; color:#475569; }
-.creator-block{
-  margin:12px 18px 20px;
-  font-size:14px;
-}
-.creator-block hr{
-  border:none;
-  border-top:1px solid #e2e8f0;
-  margin:12px 0;
-}
-.container{ padding:10px 14px 24px; }
-.card{
-  display:flex;
-  align-items:center;
-  padding:16px;
-  margin-bottom:14px;
-  background:#fff;
-  border:1px solid #e2e8f0;
-  border-radius:16px;
-  text-decoration:none;
-  color:#0f172a;
-  box-shadow:0 8px 18px rgba(15,23,42,0.06);
-}
-.num{
-  font-size:18px;
-  font-weight:700;
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(135deg,#93c5fd,#38bdf8);
-  color:#fff;
-  margin-right:14px;
-}
-.jp{ font-size:16px; font-weight:600; }
-.en{ font-size:13px; color:#475569; margin-top:2px; }
-.card:active{ transform:scale(.98); }
-</style>
 </head>
 <body>
 
-<div class="header">
-  <h1>冠動脈造影CT検査<br>英語音声ガイド</h1>
-  <p>Coronary CT Angiography – English Audio Guide</p>
-</div>
+<!-- 既存コンテンツがここにある想定 -->
 
-<div class="creator-block">
-  <hr>
-  作成：上地 慶知<br>
-  所属：放射線課<br><br>
-  Created by Yoshitomo Uechi<br>
-  Department of Radiology
-</div>
-
-<div class="container">
-</div>
-
-<button id="fab">＋</button>
-<div id="overlay" class="hidden"></div>
-
-<div id="panel" class="hidden">
+<section id="translator-section">
   <h2>翻訳ツール</h2>
-  <div class="translator-glass">
-    <textarea id="jp" placeholder="日本語を入力してください"></textarea>
-    <div class="btns">
-      <button data-t="google">Google翻訳</button>
-      <button data-t="deepl">DeepL</button>
-      <button data-t="gemini">Gemini</button>
+
+  <div class="translator-card">
+    <textarea id="jpText" placeholder="日本語を入力してください"></textarea>
+
+    <button id="copyInputBtn" class="copy-btn">📋 入力文をコピー</button>
+
+    <div class="translator-buttons">
+      <button class="btn-google" data-t="google">Google翻訳</button>
+      <button class="btn-deepl" data-t="deepl">DeepL</button>
+      <button class="btn-gemini" data-t="gemini">Gemini</button>
     </div>
+
     <p class="note">
-      翻訳結果には誤りが含まれる場合があります。使用する前に、内容を必ず確認してください。
+      翻訳結果には誤りが含まれる場合があります。使用前に必ず内容を確認してください。
     </p>
   </div>
-</div>
+</section>
 
-<div id="toast" class="toast"></div>
 <script src="translator.js"></script>
 </body>
 </html>
