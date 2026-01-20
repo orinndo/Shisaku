@@ -1,9 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="ja">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>コアベータ投与（Corebeta Administration）音声ガイド</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>テスト注入（Test Injection）音声ガイド</title>
 <style>
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
 background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
@@ -28,47 +29,43 @@ audio{width:100%;margin-top:10px;}
 </head>
 <body>
 <div class="header">
-  <div class="frame-title">
-    <h1>コアベータ投与（Corebeta Administration）</h1>
-    <p>English Audio Guide</p>
-  </div>
+<div class="frame-title">
+<h1>テスト注入（Test Injection）</h1>
+<p>English Audio Guide</p>
 </div>
-
+</div>
 <p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
-
 <div class="main">
-  <div class="row">
-    <select id="sel"></select>
-    <button id="prev">← 前</button>
-    <button id="next">次 →</button>
-  </div>
-
-  <div class="label">日本語（内容）</div>
-  <div class="jp" id="jp"></div>
-
-  <div class="label">English (Script)</div>
-  <div class="en" id="en"></div>
-
-  <div class="controls">
-    <button id="play">▶︎ 再生</button>
-    <button id="pause">⏸ 一時停止</button>
-    <button id="replay">↻ もう一度</button>
-  </div>
-
-  <div class="status" id="status">待機中 / Ready</div>
-  <audio id="player" controls></audio>
-
-  <div class="hint">
+<div class="row">
+<select id="sel"></select>
+<button id="prev">← 前</button>
+<button id="next">次 →</button>
+</div>
+<div class="label">日本語（内容）</div>
+<div class="jp" id="jp"></div>
+<div class="label">English (Script)</div>
+<div class="en" id="en"></div>
+<div class="controls">
+<button id="play">▶︎ 再生</button>
+<button id="pause">⏸ 一時停止</button>
+<button id="replay">↻ もう一度</button>
+</div>
+<div class="status" id="status">待機中 / Ready</div>
+<audio controls="" id="player"></audio>
+<div class="hint">
     再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
   </div>
 </div>
-
 <script>
 const STEPS = [
- {preview:"心拍数が少し高いので…", jp:"心拍数が少し高いので、下げるお薬を使います。", en:"Your heart rate is a bit high, so we’ll give you some medicine to help lower it."},
- {preview:"1分かけてゆっくり…", jp:"看護師が1分かけてゆっくりお薬を注射します。", en:"The nurse will inject the medicine slowly over one minute."},
- {preview:"血圧を何回か…", jp:"血圧を何回か測りますね。", en:"I’ll take your blood pressure a few times."},
- {preview:"心拍が安定したので…", jp:"心拍数が安定したので、これから撮影を始めます。", en:"Your heart rate is stable now, so we’ll start the scan."}
+ {preview:"両腕を頭の上に上げてください。", jp:"両腕を頭の上に上げてください。", en:"Please raise your arms above your head."},
+ {preview:"右腕を曲げずに、できるだけまっすぐ伸ばしていてください。", jp:"右腕を曲げずに、できるだけまっすぐ伸ばしていてください。", en:"Please try to keep your right arm straight without bending the elbow."},
+ {preview:"左腕を曲げずに、できるだけまっすぐ伸ばしていてください。", jp:"左腕を曲げずに、できるだけまっすぐ伸ばしていてください。", en:"Please try to keep your left arm straight without bending the elbow."},
+ {preview:"安全確認のために、本番と同じ速度で生理食塩水を流してテスト注入をします。", jp:"安全確認のために、本番と同じ速度で生理食塩水を流してテスト注入をします。", en:"Just to make sure everything’s okay, we’re going to do a test injection using saline at the same speed as the actual contrast dye injection."},
+ {preview:"痛みがあれば、すぐ教えてください。", jp:"痛みがあれば、すぐ教えてください。", en:"Please let me know if it hurts."},
+ {preview:"今からテスト注入を始めます。", jp:"今からテスト注入を始めます。", en:"We’re starting the test injection now."},
+ {preview:"痛みはありましたか？", jp:"痛みはありましたか？", en:"Did you feel any pain?"},
+ {preview:"それでは本番の注入を開始します。", jp:"それでは本番の注入を開始します。", en:"We’ll start the actual injection."},
 ];
 
 const sel=document.getElementById('sel'),
