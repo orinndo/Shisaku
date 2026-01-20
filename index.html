@@ -187,7 +187,10 @@ body {
 
 <!-- 翻訳ツール：パネル -->
 <div id="panel" class="hidden" role="dialog" aria-modal="true" aria-label="翻訳ツール">
-  <h2>翻訳ツール</h2>
+  <div class="panel-header">
+    <h2>翻訳ツール</h2>
+    <button id="copyBtn" type="button" aria-label="入力文をコピー">コピー</button>
+  </div>
 
   <div class="translator-glass">
     <textarea id="jp" placeholder="日本語を入力してください"></textarea>
@@ -196,7 +199,6 @@ body {
       <button data-t="google" type="button">Google翻訳</button>
       <button data-t="deepl" type="button">DeepL</button>
       <button data-t="gemini" type="button">Gemini</button>
-      <button id="copyBtn" type="button">コピー</button>
     </div>
 
     <p class="note">

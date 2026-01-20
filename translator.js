@@ -6,6 +6,25 @@
   const copyBtn = document.getElementById('copyBtn');
   const toast = document.getElementById('toast');
 
+  // Scroll lock that preserves background gradient position (prevents iOS "dimming"/shift)
+  let scrollY = 0;
+  function lockScroll(){
+    scrollY = window.scrollY || window.pageYOffset || 0;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.width = '100%';
+  }
+  function unlockScroll(){
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollY);
+  }
+
   function showToast(msg){
     if(!toast) return;
     toast.textContent = msg;
@@ -18,9 +37,7 @@
     panel.classList.remove('hidden');
     overlay.classList.remove('hidden');
     overlay.setAttribute('aria-hidden','false');
-    // overlay is transparent so background color will NOT change
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
+    lockScroll();
     setTimeout(()=>{ try{ jp.focus(); }catch(e){} }, 0);
   }
 
@@ -28,8 +45,7 @@
     panel.classList.add('hidden');
     overlay.classList.add('hidden');
     overlay.setAttribute('aria-hidden','true');
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = '';
+    unlockScroll();
   }
 
   fab?.addEventListener('click', ()=>{
@@ -61,7 +77,7 @@
     window.open(url, '_blank', 'noopener');
   });
 
-  // Copy button
+  // Copy button (placed next to title)
   copyBtn?.addEventListener('click', async ()=>{
     const text = jp?.value ?? '';
     if(!text.trim()){
@@ -72,6 +88,7 @@
       await navigator.clipboard.writeText(text);
       showToast('コピーしました');
     }catch(err){
+      // Fallback
       try{
         jp.focus();
         jp.select();

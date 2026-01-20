@@ -17,12 +17,12 @@
 }
 #fab:active{ transform:scale(.98); }
 
-/* Overlay: keep it visually transparent so the page background does NOT change */
+/* Overlay: fully transparent so the page background does NOT change */
 #overlay{
   position:fixed;
   inset:0;
-  background:transparent;   /* <- key: no tint */
-  backdrop-filter:none;      /* <- key: no blur/tint */
+  background:transparent;
+  opacity:1;
   z-index:1001;
 }
 
@@ -40,10 +40,32 @@
   box-shadow:0 18px 40px rgba(15,23,42,.18);
   z-index:1002;
 }
-#panel h2{
-  margin:0 0 12px;
-  font-size:22px;
+
+/* Header row: same height line for title + copy button */
+.panel-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
 }
+.panel-header h2{
+  margin:0;
+  font-size:22px;
+  line-height:1.2;
+}
+#copyBtn{
+  border:1px solid #cbd5e1;
+  background:#ffffff;
+  color:#0f172a;
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:15px;
+  cursor:pointer;
+  flex:0 0 auto;
+}
+#copyBtn:active{ transform:scale(.98); }
+
 .translator-glass{
   border:1px solid #cbd5e1;
   border-radius:16px;
