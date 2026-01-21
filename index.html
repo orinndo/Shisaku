@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>音声ガイドを選択してください</title>
+<meta name="home-title-en" content="音声ガイドを選択してください">
+<meta name="home-title-zh" content="请选择语音指南">
 
 <style>
 body {
@@ -81,11 +83,12 @@ body {
 
 <div class="header">
   <div class="header-title frame-title">
+    <button id="langToggle" class="lang-toggle" type="button" aria-label="Language">EN</button>
     <h1 class="main-title">
       冠動脈造影CT検査<br>
       <span class="sub-title">英語音声ガイド</span>
     </h1>
-    <p class="en-title">
+    <p class="en-title" data-en="Coronary CT Angiography – English Audio Guide" data-zh="冠状动脉CT血管造影—英语语音指南">
       Coronary CT Angiography – English Audio Guide
     </p>
   </div>
@@ -109,7 +112,7 @@ body {
     <div class="num">01</div>
     <div class="texts">
       <div class="jp">患者入室</div>
-      <div class="en">Patient Entry</div>
+      <div class="en" data-en="Patient Entry" data-zh="患者进入">Patient Entry</div>
     </div>
   </a>
 
@@ -117,7 +120,7 @@ body {
     <div class="num">02</div>
     <div class="texts">
       <div class="jp">心電図・血圧測定・息止め練習・ポジショニング</div>
-      <div class="en">ECG, Blood Pressure, Breath-hold Practice & Positioning</div>
+      <div class="en" data-en="ECG, Blood Pressure, Breath-hold Practice & Positioning" data-zh="心电图、血压测量、屏气练习与体位摆放">ECG, Blood Pressure, Breath-hold Practice & Positioning</div>
     </div>
   </a>
 
@@ -125,7 +128,7 @@ body {
     <div class="num">03</div>
     <div class="texts">
       <div class="jp">ABL前検査の場合</div>
-      <div class="en">Pre-ABL Examination</div>
+      <div class="en" data-en="Pre-ABL Examination" data-zh="ABL检查前">Pre-ABL Examination</div>
     </div>
   </a>
 
@@ -133,7 +136,7 @@ body {
     <div class="num">04</div>
     <div class="texts">
       <div class="jp">ニトロペン（舌下投与）</div>
-      <div class="en">Nitropen Sublingual Administration</div>
+      <div class="en" data-en="Nitropen Sublingual Administration" data-zh="硝酸甘油（舌下给药）">Nitropen Sublingual Administration</div>
     </div>
   </a>
 
@@ -141,7 +144,7 @@ body {
     <div class="num">05</div>
     <div class="texts">
       <div class="jp">造影剤の説明</div>
-      <div class="en">Explanation of Contrast Dye</div>
+      <div class="en" data-en="Explanation of Contrast Dye" data-zh="造影剂说明">Explanation of Contrast Dye</div>
     </div>
   </a>
 
@@ -149,7 +152,7 @@ body {
     <div class="num">06</div>
     <div class="texts">
       <div class="jp">点滴ルート確保</div>
-      <div class="en">IV Access</div>
+      <div class="en" data-en="IV Access" data-zh="静脉通路建立">IV Access</div>
     </div>
   </a>
 
@@ -157,7 +160,7 @@ body {
     <div class="num">07</div>
     <div class="texts">
       <div class="jp">コアベータ投与</div>
-      <div class="en">Corebeta Injection</div>
+      <div class="en" data-en="Corebeta Injection" data-zh="Corebeta 给药">Corebeta Injection</div>
     </div>
   </a>
 
@@ -165,7 +168,7 @@ body {
     <div class="num">08</div>
     <div class="texts">
       <div class="jp">テスト注入</div>
-      <div class="en">Test Injection Guide</div>
+      <div class="en" data-en="Test Injection Guide" data-zh="试注">Test Injection Guide</div>
     </div>
   </a>
 
@@ -173,7 +176,7 @@ body {
     <div class="num">09</div>
     <div class="texts">
       <div class="jp">撮影本番</div>
-      <div class="en">Actual Injection</div>
+      <div class="en" data-en="Actual Injection" data-zh="正式注射">Actual Injection</div>
     </div>
   </a>
 
@@ -181,7 +184,7 @@ body {
     <div class="num">10</div>
     <div class="texts">
       <div class="jp">検査終了後</div>
-      <div class="en">After the Exam</div>
+      <div class="en" data-en="After the Exam" data-zh="检查结束后">After the Exam</div>
     </div>
   </a>
 
