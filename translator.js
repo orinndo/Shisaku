@@ -6,6 +6,39 @@
   const copyBtn = document.getElementById('copyBtn');
   const toast = document.getElementById('toast');
 
+  // ---- Language system (extendable) ----
+  const LANG_KEY = 'uiLang';
+  const LANGS = {
+    en: { label: 'EN',  googleTl: 'en',  deeplTl: 'en' },
+    zh: { label: '中文', googleTl: 'zh-CN', deeplTl: 'zh' }
+  };
+  const langToggle = document.getElementById('langToggle');
+
+  function getLang(){ return localStorage.getItem(LANG_KEY) || 'en'; }
+  function applyLang(lang){
+    document.querySelectorAll('[data-en][data-zh]').forEach(el=>{
+      el.innerHTML = (lang === 'zh') ? el.getAttribute('data-zh') : el.getAttribute('data-en');
+    });
+    if(langToggle) langToggle.textContent = (LANGS[lang]?.label || 'EN');
+  }
+  function setLang(lang){
+    if(!LANGS[lang]) lang = 'en';
+    localStorage.setItem(LANG_KEY, lang);
+    applyLang(lang);
+  }
+  function cycleLang(){
+    const keys = Object.keys(LANGS);
+    const cur = getLang();
+    const next = keys[(keys.indexOf(cur)+1) % keys.length];
+    setLang(next);
+  }
+  if(langToggle) langToggle.addEventListener('click', cycleLang);
+  applyLang(getLang());
+
+  function currentGoogleTl(){ return (LANGS[getLang()]?.googleTl || 'en'); }
+  function currentDeeplTl(){ return (LANGS[getLang()]?.deeplTl || 'en'); }
+
+
   // Scroll lock that preserves background gradient position (prevents iOS "dimming"/shift)
   let scrollY = 0;
   function lockScroll(){
@@ -68,11 +101,13 @@
     const q = encodeURIComponent(text);
     let url = '';
     if(t === 'google'){
-      url = `https://translate.google.com/?sl=ja&tl=en&text=${q}&op=translate`;
+      url = `https://translate.google.com/?sl=ja&tl=${currentGoogleTl()}&text=${q}&op=translate`;
     }else if(t === 'deepl'){
-      url = `https://www.deepl.com/translator#ja/en/${q}`;
+      url = `https://www.deepl.com/translator#ja/${currentDeeplTl()}/${q}`;
     }else if(t === 'gemini'){
       url = 'https://gemini.google.com/';
+    }else if(t === 'chatgpt'){
+      url = 'https://chatgpt.com/';
     }
     window.open(url, '_blank', 'noopener');
   });

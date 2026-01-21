@@ -125,3 +125,8 @@
   display:none;
 }
 .toast.show{ display:block; }
+
+
+.header-title{ position:relative; }
+.lang-toggle{position:absolute;top:10px;right:12px;border:1px solid #cbd5e1;background:#ffffff;color:#0f172a;border-radius:999px;padding:6px 10px;font-size:12px;line-height:1;cursor:pointer;}
+.lang-toggle:active{transform:scale(.98);} 
