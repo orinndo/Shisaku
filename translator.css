@@ -127,7 +127,7 @@
 .toast.show{ display:block; }
 
 
-/* Home language toggle (in title frame) */
+/* Language toggle (EN <-> 中文) */
 .header-title{ position:relative; }
 .lang-toggle{
   position:absolute;

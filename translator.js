@@ -68,7 +68,7 @@
     const q = encodeURIComponent(text);
     let url = '';
     if(t === 'google'){
-      url = `https://translate.google.com/?sl=ja&tl=en&text=${q}&op=translate`;
+      url = `https://translate.google.com/?sl=ja&tl=' + tl + '&text=${q}&op=translate`;
     }else if(t === 'deepl'){
       url = `https://www.deepl.com/translator#ja/en/${q}`;
     }else if(t === 'gemini'){
@@ -100,37 +100,34 @@
     }
   });
 
-
-  // ---- Home language toggle (EN <-> 中文) ----
-  const langToggle = document.getElementById('langToggle');
-  const LANG_KEY = 'homeLang';
-  const metaEn = document.querySelector('meta[name="home-title-en"]');
-  const metaZh = document.querySelector('meta[name="home-title-zh"]');
-
-  function applyHomeLang(lang){
-    // Switch all elements that have data-en/data-zh
-    document.querySelectorAll('[data-en][data-zh]').forEach(el=>{
-      el.textContent = (lang === 'zh') ? el.getAttribute('data-zh') : el.getAttribute('data-en');
-    });
-    // Update button label
-    if(langToggle) langToggle.textContent = (lang === 'zh') ? '中文' : 'EN';
-    // Update document title (optional)
-    const t = (lang === 'zh') ? (metaZh?.content || document.title) : (metaEn?.content || document.title);
-    if(t) document.title = t;
-  }
-
-  if(langToggle){
-    const saved = localStorage.getItem(LANG_KEY) || 'en';
-    applyHomeLang(saved);
-    langToggle.addEventListener('click', ()=>{
-      const cur = localStorage.getItem(LANG_KEY) || 'en';
-      const next = (cur === 'zh') ? 'en' : 'zh';
-      localStorage.setItem(LANG_KEY, next);
-      applyHomeLang(next);
-    });
-  }
-
   document.addEventListener('keydown', (e)=>{
     if(e.key === 'Escape' && !panel.classList.contains('hidden')) closePanel();
   });
+
+  // ---- Language toggle (EN <-> 中文) ----
+  const langToggle = document.getElementById('langToggle');
+  const LANG_KEY = 'homeLang';
+  function getLang(){
+    return localStorage.getItem(LANG_KEY) || 'en';
+  }
+  function applyLang(lang){
+    document.querySelectorAll('[data-en][data-zh]').forEach(el=>{
+      el.textContent = (lang === 'zh') ? el.getAttribute('data-zh') : el.getAttribute('data-en');
+    });
+    if(langToggle) langToggle.textContent = (lang === 'zh') ? '中文' : 'EN';
+  }
+  if(langToggle){
+    applyLang(getLang());
+    langToggle.addEventListener('click', ()=>{
+      const next = (getLang() === 'zh') ? 'en' : 'zh';
+      localStorage.setItem(LANG_KEY, next);
+      applyLang(next);
+      // update translate button targets if present
+      if(typeof updateTranslateTargets === 'function') updateTranslateTargets();
+    });
+  } else {
+    // still apply language for pages without toggle button
+    applyLang(getLang());
+  }
+
 })();
