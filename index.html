@@ -81,12 +81,13 @@ body {
 
 <div class="header">
   <div class="header-title frame-title">
-    <button id="langToggle" class="lang-toggle" type="button" aria-label="Language" data-en="EN" data-zh="EN">EN</button>
     <h1 class="main-title">
       冠動脈造影CT検査<br>
       <span class="sub-title">英語音声ガイド</span>
     </h1>
-    <p class="en-title" data-en="Coronary CT Angiography – English Audio Guide" data-zh="Coronary CT Angiography – English Audio Guide">Coronary CT Angiography – English Audio Guide</p>
+    <p class="en-title">
+      冠状动脉CT血管造影 — 英语语音指南
+    </p>
   </div>
 </div>
 
@@ -97,8 +98,8 @@ body {
     所属：放射線課
   </p>
   <p class="creator-en">
-    Created by Yoshitomo Uechi<br>
-    Department of Radiology
+    制作者：Yoshitomo Uechi<br>
+    放射线科
   </p>
 </div>
 
@@ -108,7 +109,7 @@ body {
     <div class="num">01</div>
     <div class="texts">
       <div class="jp">患者入室</div>
-      <div class="en" data-en="Patient Entry" data-zh="Patient Entry">Patient Entry</div>
+      <div class="en">患者进入</div>
     </div>
   </a>
 
@@ -116,7 +117,7 @@ body {
     <div class="num">02</div>
     <div class="texts">
       <div class="jp">心電図・血圧測定・息止め練習・ポジショニング</div>
-      <div class="en" data-en="ECG, Blood Pressure, Breath-hold Practice & Positioning" data-zh="ECG, Blood Pressure, Breath-hold Practice & Positioning">ECG, Blood Pressure, Breath-hold Practice & Positioning</div>
+      <div class="en">心电图、血压测量、屏气练习与体位摆放</div>
     </div>
   </a>
 
@@ -124,7 +125,7 @@ body {
     <div class="num">03</div>
     <div class="texts">
       <div class="jp">ABL前検査の場合</div>
-      <div class="en" data-en="Pre-ABL Examination" data-zh="Pre-ABL Examination">Pre-ABL Examination</div>
+      <div class="en">ABL检查前</div>
     </div>
   </a>
 
@@ -132,7 +133,7 @@ body {
     <div class="num">04</div>
     <div class="texts">
       <div class="jp">ニトロペン（舌下投与）</div>
-      <div class="en" data-en="Nitropen Sublingual Administration" data-zh="Nitropen Sublingual Administration">Nitropen Sublingual Administration</div>
+      <div class="en">硝酸甘油（舌下给药）</div>
     </div>
   </a>
 
@@ -140,7 +141,7 @@ body {
     <div class="num">05</div>
     <div class="texts">
       <div class="jp">造影剤の説明</div>
-      <div class="en" data-en="Explanation of Contrast Dye" data-zh="Explanation of Contrast Dye">Explanation of Contrast Dye</div>
+      <div class="en">造影剂说明</div>
     </div>
   </a>
 
@@ -148,7 +149,7 @@ body {
     <div class="num">06</div>
     <div class="texts">
       <div class="jp">点滴ルート確保</div>
-      <div class="en" data-en="IV Access" data-zh="IV Access">IV Access</div>
+      <div class="en">静脉通路建立</div>
     </div>
   </a>
 
@@ -156,7 +157,7 @@ body {
     <div class="num">07</div>
     <div class="texts">
       <div class="jp">コアベータ投与</div>
-      <div class="en" data-en="Corebeta Injection" data-zh="Corebeta Injection">Corebeta Injection</div>
+      <div class="en">Corebeta 给药</div>
     </div>
   </a>
 
@@ -164,7 +165,7 @@ body {
     <div class="num">08</div>
     <div class="texts">
       <div class="jp">テスト注入</div>
-      <div class="en" data-en="Test Injection Guide" data-zh="Test Injection Guide">Test Injection Guide</div>
+      <div class="en">试注</div>
     </div>
   </a>
 
@@ -172,7 +173,7 @@ body {
     <div class="num">09</div>
     <div class="texts">
       <div class="jp">撮影本番</div>
-      <div class="en" data-en="Actual Injection" data-zh="Actual Injection">Actual Injection</div>
+      <div class="en">正式注射</div>
     </div>
   </a>
 
@@ -180,14 +181,14 @@ body {
     <div class="num">10</div>
     <div class="texts">
       <div class="jp">検査終了後</div>
-      <div class="en" data-en="After the Exam" data-zh="After the Exam">After the Exam</div>
+      <div class="en">检查结束后</div>
     </div>
   </a>
 
 </div>
 
 <!-- 翻訳ツール：＋ボタン -->
-<button id="fab" aria-label="翻訳ツールを開く" type="button" data-en="＋" data-zh="＋">＋</button>
+<button id="fab" aria-label="翻訳ツールを開く" type="button">＋</button>
 
 <!-- 翻訳ツール：オーバーレイ（背景色を変えない） -->
 <div id="overlay" class="hidden" aria-hidden="true"></div>
@@ -196,17 +197,17 @@ body {
 <div id="panel" class="hidden" role="dialog" aria-modal="true" aria-label="翻訳ツール">
   <div class="panel-header">
     <h2>翻訳ツール</h2>
-    <button id="copyBtn" type="button" aria-label="入力文をコピー" data-en="コピー" data-zh="コピー">コピー</button>
+    <button id="copyBtn" type="button" aria-label="入力文をコピー">コピー</button>
   </div>
 
   <div class="translator-glass">
     <textarea id="jp" placeholder="日本語を入力してください"></textarea>
 
     <div class="btns">
-      <button data-t="google" type="button" data-en="Google翻訳" data-zh="Google翻訳">Google翻訳</button>
-      <button data-t="deepl" type="button" data-en="DeepL" data-zh="DeepL">DeepL</button>
-      <button data-t="gemini" type="button" data-en="Gemini" data-zh="Gemini">Gemini</button>
-      <button data-t="chatgpt" type="button" data-en="ChatGPT" data-zh="ChatGPT">ChatGPT</button>
+      <button data-t="google" type="button">Google翻訳</button>
+      <button data-t="deepl" type="button">DeepL</button>
+      <button data-t="gemini" type="button">Gemini</button>
+      <button data-t="chatgpt" type="button">ChatGPT</button>
     </div>
 
     <p class="note">
