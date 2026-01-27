@@ -139,3 +139,10 @@
     if(e.key === 'Escape' && !panel.classList.contains('hidden')) closePanel();
   });
 })();
+function switchLang(lang){
+  document.querySelectorAll('.card').forEach(card=>{
+    const target = card.dataset[lang];
+    const fallback = card.dataset.en;
+    card.href = target || fallback;
+  });
+}
