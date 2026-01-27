@@ -1,148 +1,60 @@
-(function(){
-  const fab = document.getElementById('fab');
-  const overlay = document.getElementById('overlay');
-  const panel = document.getElementById('panel');
-  const jp = document.getElementById('jp');
-  const copyBtn = document.getElementById('copyBtn');
-  const toast = document.getElementById('toast');
+let currentLang = "en";
 
-  // ---- Language system (extendable) ----
-  const LANG_KEY = 'uiLang';
-  const LANGS = {
-    en: { label: 'EN',  googleTl: 'en',  deeplTl: 'en' },
-    zh: { label: '中文', googleTl: 'zh-CN', deeplTl: 'zh' }
-  };
-  const langToggle = document.getElementById('langToggle');
-
-  function getLang(){ return localStorage.getItem(LANG_KEY) || 'en'; }
-  function applyLang(lang){
-    document.querySelectorAll('[data-en][data-zh]').forEach(el=>{
-      el.innerHTML = (lang === 'zh') ? el.getAttribute('data-zh') : el.getAttribute('data-en');
-    });
-    if(langToggle) langToggle.textContent = (LANGS[lang]?.label || 'EN');
+const LANGS = {
+  en: {
+    titleSub: "English Audio Guide",
+    sections: [
+      { jp:"患者入室", sub:"Patient Entry", url:"/patient-entry/" },
+      { jp:"心電図・血圧測定・息止め練習・ポジショニング", sub:"ECG, BP & Positioning", url:"/ECG-BP-Positioning/" },
+      { jp:"ABL前検査の場合", sub:"Pre-ABL Examination", url:"/ABL/" },
+      { jp:"ニトロペン（舌下投与）", sub:"Nitropen Sublingual", url:"/nitropen-sublingual/" },
+      { jp:"造影剤の説明", sub:"Contrast Dye", url:"/explanation-of-contrast-dye-/" },
+      { jp:"点滴ルート確保", sub:"IV Access", url:"/IV-access/" },
+      { jp:"コアベータ投与", sub:"Corebeta Injection", url:"/corebeta-injection/" },
+      { jp:"テスト注入", sub:"Test Injection", url:"/test-injection-guide/" },
+      { jp:"撮影本番", sub:"Main Scan", url:"/actual-injection/" },
+      { jp:"検査終了後", sub:"After the Exam", url:"/after-the-exam/" }
+    ]
+  },
+  zh: {
+    titleSub: "中文语音指南",
+    sections: [
+      { jp:"患者入室", sub:"患者进入", url:"/zh/patient-entry/" },
+      { jp:"心電図・血圧測定・息止め練習・ポジショニング", sub:"心电图、血压测量与体位调整", url:"/zh/ECG-BP-Positioning/" },
+      { jp:"ABL前検査の場合", sub:"ABL检查前", url:"/zh/ABL/" },
+      { jp:"ニトロペン（舌下投与）", sub:"硝酸甘油（舌下给药）", url:"/zh/nitropen-sublingual/" },
+      { jp:"造影剤の説明", sub:"造影剂说明", url:"/zh/explanation-of-contrast-dye-/" },
+      { jp:"コアベータ投与", sub:"β受体阻滞剂给药", url:"/zh/corebeta-injection/" },
+      { jp:"テスト注入", sub:"测试注射", url:"/zh/test-injection-guide/" },
+      { jp:"撮影本番", sub:"正式扫描", url:"/zh/actual-injection/" },
+      { jp:"検査終了後", sub:"检查结束后", url:"/zh/after-the-exam/" }
+    ]
   }
-  function setLang(lang){
-    if(!LANGS[lang]) lang = 'en';
-    localStorage.setItem(LANG_KEY, lang);
-    applyLang(lang);
-  }
-  function cycleLang(){
-    const keys = Object.keys(LANGS);
-    const cur = getLang();
-    const next = keys[(keys.indexOf(cur)+1) % keys.length];
-    setLang(next);
-  }
-  if(langToggle) langToggle.addEventListener('click', cycleLang);
-  applyLang(getLang());
+};
 
-  function currentGoogleTl(){ return (LANGS[getLang()]?.googleTl || 'en'); }
-  function currentDeeplTl(){ return (LANGS[getLang()]?.deeplTl || 'en'); }
+function render(){
+  const data = LANGS[currentLang];
+  document.querySelector(".sub-title").textContent = data.titleSub;
 
-
-  // Scroll lock that preserves background gradient position (prevents iOS "dimming"/shift)
-  let scrollY = 0;
-  function lockScroll(){
-    scrollY = window.scrollY || window.pageYOffset || 0;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.width = '100%';
-  }
-  function unlockScroll(){
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.left = '';
-    document.body.style.right = '';
-    document.body.style.width = '';
-    window.scrollTo(0, scrollY);
-  }
-
-  function showToast(msg){
-    if(!toast) return;
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(()=>toast.classList.remove('show'), 1400);
-  }
-
-  function openPanel(){
-    panel.classList.remove('hidden');
-    overlay.classList.remove('hidden');
-    overlay.setAttribute('aria-hidden','false');
-    lockScroll();
-    setTimeout(()=>{ try{ jp.focus(); }catch(e){} }, 0);
-  }
-
-  function closePanel(){
-    panel.classList.add('hidden');
-    overlay.classList.add('hidden');
-    overlay.setAttribute('aria-hidden','true');
-    unlockScroll();
-  }
-
-  fab?.addEventListener('click', ()=>{
-    if(panel.classList.contains('hidden')) openPanel();
-    else closePanel();
-  });
-
-  overlay?.addEventListener('click', closePanel);
-
-  // Translation buttons
-  panel?.addEventListener('click', (e)=>{
-    const btn = e.target.closest('button[data-t]');
-    if(!btn) return;
-    const t = btn.getAttribute('data-t');
-    const text = (jp?.value || '').trim();
-    if(!text){
-      showToast('文章を入力してください');
+  document.querySelectorAll(".card").forEach((card,i)=>{
+    const sec = data.sections[i];
+    if(!sec){
+      card.style.display="none";
       return;
     }
-    const q = encodeURIComponent(text);
-    let url = '';
-    if(t === 'google'){
-      url = `https://translate.google.com/?sl=ja&tl=${currentGoogleTl()}&text=${q}&op=translate`;
-    }else if(t === 'deepl'){
-      url = `https://www.deepl.com/translator#ja/${currentDeeplTl()}/${q}`;
-    }else if(t === 'gemini'){
-      url = 'https://gemini.google.com/';
-    }else if(t === 'chatgpt'){
-      url = 'https://chatgpt.com/';
-    }
-    window.open(url, '_blank', 'noopener');
+    card.style.display="";
+    card.href = sec.url;
+    card.querySelector(".jp").textContent = sec.jp;
+    card.querySelector(".en").textContent = sec.sub;
   });
 
-  // Copy button (placed next to title)
-  copyBtn?.addEventListener('click', async ()=>{
-    const text = jp?.value ?? '';
-    if(!text.trim()){
-      showToast('コピーする文章がありません');
-      return;
-    }
-    try{
-      await navigator.clipboard.writeText(text);
-      showToast('コピーしました');
-    }catch(err){
-      // Fallback
-      try{
-        jp.focus();
-        jp.select();
-        const ok = document.execCommand('copy');
-        showToast(ok ? 'コピーしました' : 'コピーに失敗しました');
-      }catch(e){
-        showToast('コピーに失敗しました');
-      }
-    }
-  });
-
-  document.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape' && !panel.classList.contains('hidden')) closePanel();
-  });
-})();
-function switchLang(lang){
-  document.querySelectorAll('.card').forEach(card=>{
-    const target = card.dataset[lang];
-    const fallback = card.dataset.en;
-    card.href = target || fallback;
-  });
+  document.querySelector(".lang-btn").textContent =
+    currentLang==="en" ? "中文" : "English";
 }
+
+function toggleLang(){
+  currentLang = currentLang==="en" ? "zh" : "en";
+  render();
+}
+
+render();
