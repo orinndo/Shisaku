@@ -62,7 +62,7 @@
     const t = btn.getAttribute('data-t');
     const text = (jp?.value || '').trim();
     if(!text){
-      showToast('请输入文字');
+      showToast('文章を入力してください');
       return;
     }
     const q = encodeURIComponent(text);
@@ -70,11 +70,9 @@
     if(t === 'google'){
       url = `https://translate.google.com/?sl=ja&tl=en&text=${q}&op=translate`;
     }else if(t === 'deepl'){
-      url = `https://www.deepl.com/translator#ja/zh/${q}`;
+      url = `https://www.deepl.com/translator#ja/en/${q}`;
     }else if(t === 'gemini'){
       url = 'https://gemini.google.com/';
-    }else if(t === 'chatgpt'){
-      url = 'https://chat.openai.com/';
     }
     window.open(url, '_blank', 'noopener');
   });
@@ -83,21 +81,21 @@
   copyBtn?.addEventListener('click', async ()=>{
     const text = jp?.value ?? '';
     if(!text.trim()){
-      showToast('没有可复制的内容');
+      showToast('コピーする文章がありません');
       return;
     }
     try{
       await navigator.clipboard.writeText(text);
-      showToast('已复制');
+      showToast('コピーしました');
     }catch(err){
       // Fallback
       try{
         jp.focus();
         jp.select();
         const ok = document.execCommand('copy');
-        showToast(ok ? '已复制' : '复制失败');
+        showToast(ok ? 'コピーしました' : 'コピーに失敗しました');
       }catch(e){
-        showToast('复制失败');
+        showToast('コピーに失敗しました');
       }
     }
   });
