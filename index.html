@@ -3,109 +3,212 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>冠動脈造影CT検査 音声ガイド</title>
+<title>音声ガイドを選択してください</title>
+
+<style>
+body {
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+  background:linear-gradient(180deg,#f7fbff,#eef6ff);
+  color:#0f172a;
+}
+.header { padding:18px; }
+.header h1 { margin:0 0 6px; font-size:22px; }
+.header p { margin:0; font-size:13px; color:#475569; }
+.container { padding:10px 14px 24px; }
+
+.card{
+  display:flex;
+  align-items:center;
+  padding:16px;
+  margin-bottom:14px;
+  background:#ffffff;
+  border:1px solid #e2e8f0;
+  border-radius:16px;
+  text-decoration:none;
+  color:#0f172a;
+  box-shadow:0 8px 18px rgba(15,23,42,0.06);
+}
+.num{
+  font-size:18px;
+  font-weight:700;
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#93c5fd,#38bdf8);
+  color:#ffffff;
+  margin-right:14px;
+}
+.jp{ font-size:16px; font-weight:600; }
+.en{ font-size:13px; color:#475569; margin-top:2px; }
+.card:active{ transform:scale(.98); }
+
+/* footer (as in your original page) */
+.page-footer{
+  padding:10px 14px 24px;
+  text-align:center;
+  color:#475569;
+}
+.page-footer hr{
+  border:none;
+  border-top:1px solid #e2e8f0;
+  margin:18px 0 14px;
+}
+.page-footer .creator,
+.page-footer .creator-en{
+  margin:0;
+  font-size:13px;
+  line-height:1.6;
+}
+
+/* === Restored title blue frame (NO other changes) === */
+.header-title{
+  border:2px solid #38bdf8;
+  border-radius:16px;
+  padding:16px 14px;
+  background:#f8fbff;
+}
+
+</style>
+
 <link rel="stylesheet" href="translator.css">
 </head>
+
 <body>
 
 <div class="header">
-  <h1>冠動脈造影CT検査</h1>
-  <div class="sub-title">English Audio Guide</div>
-  <button onclick="toggleLang()" class="lang-btn">中文</button>
+  <div class="header-title frame-title">
+    <h1 class="main-title">
+      冠動脈造影CT検査<br>
+      <span class="sub-title">中国語音声ガイド</span>
+    </h1>
+    <p class="en-title">
+      冠状动脉CT血管造影（CCTA）– 中文语音指南
+    </p>
+  </div>
 </div>
 
-<div class="cards">
-  
-  <a class="card" data-index="0">
+<div class="page-footer" style="padding-top:0;">
+  <hr>
+  <p class="creator">
+    作成：上地 慶知<br>
+    所属：放射線課
+  </p>
+  <p class="creator-en">
+    Created by Yoshitomo Uechi<br>
+    Department of Radiology
+  </p>
+</div>
+
+<div class="container">
+
+  <a class="card" href="https://orinndo.github.io/Patient-entry-CN/">
     <div class="num">01</div>
     <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
+      <div class="jp">患者入室</div>
+      <div class="en">患者进入检查室</div>
     </div>
   </a>
-  
 
-  <a class="card" data-index="1">
+  <a class="card" href="https://orinndo.github.io/BP-ECG-breathhold-CN/">
     <div class="num">02</div>
     <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
+      <div class="jp">心電図・血圧測定・息止め練習・ポジショニング</div>
+      <div class="en">心电图、血压、屏气练习与摆位</div>
     </div>
   </a>
-  
 
-  <a class="card" data-index="2">
+  <a class="card" href="https://orinndo.github.io/ABL-pretest-CN/">
     <div class="num">03</div>
     <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
+      <div class="jp">ABL前検査の場合</div>
+      <div class="en">消融（ABL）前检查</div>
     </div>
   </a>
-  
 
-  <a class="card" data-index="3">
+  <a class="card" href="https://orinndo.github.io/Nitrogen-sublingual-CN/">
     <div class="num">04</div>
     <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
+      <div class="jp">ニトロペン（舌下投与）</div>
+      <div class="en">硝酸甘油舌下含服</div>
     </div>
   </a>
-  
 
-  <a class="card" data-index="4">
+  <a class="card" href="https://orinndo.github.io/explanation-of-contrast-dye-CN/">
     <div class="num">05</div>
     <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
+      <div class="jp">造影剤の説明</div>
+      <div class="en">造影剂说明</div>
     </div>
   </a>
-  
 
-  <a class="card" data-index="5">
+  <a class="card" href="https://orinndo.github.io/Corebeta-CN/">
     <div class="num">06</div>
     <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
+      <div class="jp">コアベータ投与</div>
+      <div class="en">科贝塔（Corebeta）给药</div>
     </div>
   </a>
-  
 
-  <a class="card" data-index="6">
+  <a class="card" href="https://orinndo.github.io/Test-injection-CN/">
     <div class="num">07</div>
     <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
+      <div class="jp">テスト注入</div>
+      <div class="en">测试注射</div>
     </div>
   </a>
-  
 
-  <a class="card" data-index="7">
+  <a class="card" href="https://orinndo.github.io/actual-injection-CN/">
     <div class="num">08</div>
     <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
+      <div class="jp">撮影本番</div>
+      <div class="en">正式注射/扫描</div>
     </div>
   </a>
-  
 
-  <a class="card" data-index="8">
+  <a class="card" href="https://orinndo.github.io/after-the-exam-CN/">
     <div class="num">09</div>
     <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
+      <div class="jp">検査終了後</div>
+      <div class="en">检查结束后</div>
     </div>
   </a>
-  
 
-  <a class="card" data-index="9">
-    <div class="num">10</div>
-    <div class="texts">
-      <div class="jp"></div>
-      <div class="en"></div>
-    </div>
-  </a>
-  
 </div>
+
+<!-- 翻訳ツール：＋ボタン -->
+<button id="fab" aria-label="翻译工具を开く" type="button">＋</button>
+
+<!-- 翻訳ツール：オーバーレイ（背景色を変えない） -->
+<div id="overlay" class="hidden" aria-hidden="true"></div>
+
+<!-- 翻訳ツール：パネル -->
+<div id="panel" class="hidden" role="dialog" aria-modal="true" aria-label="翻译工具">
+  <div class="panel-header">
+    <h2>翻译工具</h2>
+    <button id="copyBtn" type="button" aria-label="复制输入的文字">复制</button>
+  </div>
+
+  <div class="translator-glass">
+    <textarea id="jp" placeholder="请输入日语"></textarea>
+
+    <div class="btns">
+      <button data-t="google" type="button">Google 翻译</button>
+      <button data-t="deepl" type="button">DeepL</button>
+      <button data-t="gemini" type="button">Gemini</button>
+      <button data-t="chatgpt" type="button">ChatGPT</button>
+    </div>
+
+    <p class="note">
+      翻译结果可能包含错误。使用前请务必确认内容。
+    </p>
+  </div>
+</div>
+
+<div id="toast" class="toast" aria-live="polite"></div>
 
 <script src="translator.js"></script>
 </body>
