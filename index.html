@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Language Selection</title>
+<style>
+body {
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+  background:linear-gradient(180deg,#f7fbff,#eef6ff);
+  color:#0f172a;
+}
+.header { padding:18px; }
+.header-title{
+  border:2px solid #38bdf8;
+  border-radius:16px;
+  padding:16px 14px;
+  background:#f8fbff;
+}
+.header h1 { margin:0 0 6px; font-size:22px; }
+.header p { margin:0; font-size:13px; color:#475569; }
+.container { padding:10px 14px 24px; }
+.card{
+  display:flex;
+  align-items:center;
+  padding:16px;
+  margin-bottom:14px;
+  background:#ffffff;
+  border:1px solid #e2e8f0;
+  border-radius:16px;
+  text-decoration:none;
+  color:#0f172a;
+  box-shadow:0 8px 18px rgba(15,23,42,0.06);
+}
+.num{
+  font-size:18px;
+  font-weight:700;
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#93c5fd,#38bdf8);
+  color:#ffffff;
+  margin-right:14px;
+}
+.jp{ font-size:16px; font-weight:600; }
+.en{ font-size:13px; color:#475569; margin-top:2px; }
+.card:active{ transform:scale(.98); }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-title">
+    <h1>冠動脈造影CT検査<br><span style="font-size:14px;color:#475569;">Audio Guide</span></h1>
+    <p>言語を選択してください / Please choose a language / 请选择语言</p>
+  </div>
+</div>
+
+<div class="container">
+  <a class="card" href="./en/">
+    <div class="num">EN</div>
+    <div class="texts">
+      <div class="jp">英語</div>
+      <div class="en">English Audio Guide</div>
+    </div>
+  </a>
+
+  <a class="card" href="./cn/">
+    <div class="num">中</div>
+    <div class="texts">
+      <div class="jp">中国語</div>
+      <div class="en">中文语音指南</div>
+    </div>
+  </a>
+</div>
+</body>
+</html>
