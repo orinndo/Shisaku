@@ -145,6 +145,34 @@ audio{width:100%;margin-top:10px;}
   </div>
 </div>
 
+<!-- Emergency quick check (added) -->
+<button class="fab-emg" id="emgOpen" type="button" aria-haspopup="dialog" aria-controls="emgSheet">⚠ 急変時確認</button>
+
+<div class="emg-backdrop" id="emgBackdrop" aria-hidden="true"></div>
+
+<div class="emg-sheet" id="emgSheet" role="dialog" aria-modal="true" aria-labelledby="emgTitle" aria-hidden="true">
+  <div class="emg-panel">
+    <div class="emg-head">
+      <div>
+        <p class="emg-title" id="emgTitle">⚠ 急変時確認（Emergency Check）</p>
+        <p class="emg-sub">必要時にタップして質問を再生できます（通常の検査フローは変更しません）。</p>
+      </div>
+      <button class="emg-close" id="emgClose" type="button">閉じる</button>
+    </div>
+
+    <div class="emg-list" id="emgList"></div>
+
+    <div class="emg-actions">
+      <button class="emg-close" id="emgStop" type="button">■ 停止</button>
+      <button class="emg-close" id="emgClose2" type="button">閉じる</button>
+    </div>
+
+    <div class="emg-status" id="emgStatus">待機中 / Ready</div>
+    <audio id="emgPlayer" controls style="width:100%;margin-top:10px;"></audio>
+  </div>
+</div>
+
+
 <script>
 const STEPS = [
  {preview:"まもなく造影剤を注射します…", jp:"まもなく造影剤を注射します。", en:"We're going to inject the contrast dye soon."},
@@ -189,6 +217,7 @@ player.onpause=()=>status.textContent="一時停止 / Paused";
 player.onended=()=>status.textContent="待機中 / Ready";
 load(0);
 
+document.addEventListener('DOMContentLoaded',()=>{
 // --- Emergency quick check (added) ---
 const EMG = [
   {jp:'聞こえますか？意識ははっきりしていますか？', en:'Can you hear me? Are you okay?', audio:"audio/emergency_01.m4a"},
@@ -269,32 +298,12 @@ document.addEventListener('keydown',(e)=>{
 
 </script>
 
-<!-- Emergency quick check (added) -->
-<button class="fab-emg" id="emgOpen" type="button" aria-haspopup="dialog" aria-controls="emgSheet">⚠ 急変時確認</button>
+</body>
+</html>
 
-<div class="emg-backdrop" id="emgBackdrop" aria-hidden="true"></div>
+});
 
-<div class="emg-sheet" id="emgSheet" role="dialog" aria-modal="true" aria-labelledby="emgTitle" aria-hidden="true">
-  <div class="emg-panel">
-    <div class="emg-head">
-      <div>
-        <p class="emg-title" id="emgTitle">⚠ 急変時確認（Emergency Check）</p>
-        <p class="emg-sub">必要時にタップして質問を再生できます（通常の検査フローは変更しません）。</p>
-      </div>
-      <button class="emg-close" id="emgClose" type="button">閉じる</button>
-    </div>
-
-    <div class="emg-list" id="emgList"></div>
-
-    <div class="emg-actions">
-      <button class="emg-close" id="emgStop" type="button">■ 停止</button>
-      <button class="emg-close" id="emgClose2" type="button">閉じる</button>
-    </div>
-
-    <div class="emg-status" id="emgStatus">待機中 / Ready</div>
-    <audio id="emgPlayer" controls style="width:100%;margin-top:10px;"></audio>
-  </div>
-</div>
+</script>
 
 </body>
 </html>
