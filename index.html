@@ -1,388 +1,168 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>血圧測定・心電図・息止め練習</title>
-  <style>
-    :root{
-      --blue:#38bdf8;
-      --blue2:#60a5fa;
-      --border:#cbd5f5;
-      --text:#0f172a;
-      --muted:#475569;
-      --muted2:#64748b;
-      --bg1:#f7fbff;
-      --bg2:#eef6ff;
-      --card:#ffffff;
-    }
-    body{
-      margin:0;
-      font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
-      background:linear-gradient(180deg,var(--bg1),var(--bg2));
-      color:var(--text);
-    }
-    .wrap{max-width:760px;margin:0 auto;}
-    .header{padding:18px 16px 10px;}
-    .frame-title{
-      border:2px solid var(--blue);
-      padding:14px 16px;
-      border-radius:14px;
-      background:#f8fcff;
-      text-align:center;
-      box-shadow:0 6px 14px rgba(15,23,42,.06);
-    }
-    .frame-title h1{margin:0;font-size:20px;letter-spacing:.02em;}
-    .frame-title p{margin:6px 0 0;font-size:14px;color:var(--muted);}
-    .note{font-size:12px;color:var(--muted);margin:12px 16px;line-height:1.5;}
-    .main{
-      margin:0 16px 24px;
-      padding:16px;
-      background:var(--card);
-      border-radius:18px;
-      box-shadow:0 10px 22px rgba(15,23,42,.08);
-    }
-    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
-    select{
-      flex:1;
-      max-width:100%;
-      font-size:16px;
-      padding:10px 36px 10px 12px; /* caret space */
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:#f1f7ff;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      color:#0b4a8b;
-      font-weight:700;
-    }
-    button{
-      font-size:15px;
-      padding:10px 14px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:#eff6ff;
-      color:#0b4a8b;
-      font-weight:700;
-    }
-    button:active{transform:scale(.98);}
-    .label{margin-top:14px;font-size:13px;color:var(--muted);}
-    .jp{font-size:20px;font-weight:800;margin-top:6px;line-height:1.35;}
-    .en{font-size:16px;margin-top:6px;line-height:1.45;color:#111827;}
-    .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
-    .status{margin-top:10px;font-size:13px;color:var(--muted);font-weight:700;}
-    audio{width:100%;margin-top:8px;}
-    .hint{margin-top:10px;font-size:12px;color:var(--muted2);line-height:1.5;}
-  
-/* --- Emergency floating button + sheet (added) --- */
-.fab-emg{
-  position:fixed; right:16px; bottom:16px;
-  z-index:9999;
-  border:1px solid #fecaca;
-  background:#fff1f2;
-  color:#9f1239;
-  font-weight:700;
-  border-radius:999px;
-  padding:12px 14px;
-  box-shadow:0 8px 18px rgba(15,23,42,.12);
-}
-.fab-emg:active{transform:scale(.98);}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>撮影本番（Main Scan）音声ガイド</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
+.header{padding:18px 16px 10px;}
+.frame-title{border:2px solid #38bdf8;padding:14px 16px;border-radius:14px;background:#f8fcff;text-align:center;}
+.frame-title h1{margin:0;font-size:20px;}
+.frame-title p{margin:6px 0 0;font-size:14px;color:#475569;}
+.note{font-size:12px;color:#475569;margin:12px 16px;}
+.main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
+button:active{transform:scale(.98);}
+.label{margin-top:14px;font-size:13px;color:#475569;}
+.jp{font-size:18px;font-weight:600;margin-top:6px;}
+.en{font-size:16px;margin-top:4px;}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+audio{width:100%;margin-top:10px;}
+.status{margin-top:8px;font-size:13px;color:#475569;}
+.hint{margin-top:10px;font-size:12px;color:#64748b;}
 
-.emg-backdrop{
-  position:fixed; inset:0;
-  background:rgba(15,23,42,.45);
-  z-index:9998;
-  display:none;
-}
-.emg-sheet{
-  position:fixed; left:0; right:0; bottom:0;
-  z-index:9999;
-  display:none;
-  padding:12px 12px 18px;
-}
-.emg-panel{
-  max-width:720px;
-  margin:0 auto;
-  background:#ffffff;
-  border-radius:18px;
-  box-shadow:0 18px 36px rgba(15,23,42,.22);
-  padding:14px;
-}
-.emg-head{
-  display:flex; align-items:center; justify-content:space-between; gap:10px;
-  margin-bottom:10px;
-}
-.emg-title{
-  font-size:16px; font-weight:800; color:#9f1239; margin:0;
-}
-.emg-sub{
-  font-size:12px; color:#475569; margin:4px 0 0;
-}
-.emg-close{
-  border:1px solid #cbd5f5;
-  background:#eff6ff;
-  border-radius:12px;
-  padding:10px 12px;
-  font-size:14px;
-}
-.emg-list{
-  display:flex; flex-direction:column; gap:8px;
-  margin-top:10px;
-}
-.emg-item{
-  display:flex; flex-direction:column; gap:8px;
-  border:1px solid #e2e8f0;
-  border-radius:14px;
-  padding:10px 12px;
-  background:#ffffff;
-}
-.emg-jp{ font-size:16px; font-weight:700; color:#0f172a; line-height:1.35;}
-.emg-en{ font-size:13px; color:#475569; line-height:1.35;}
-.emg-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
-.emg-play{
-  border:1px solid #fecaca;
-  background:#fff1f2;
-  color:#9f1239;
-  border-radius:12px;
-  padding:10px 12px;
-  font-size:14px;
-  font-weight:800;
-}
-.emg-status{
-  margin-top:10px;
-  font-size:12px;
-  color:#475569;
-  font-weight:700;
-}
+/* === Emergency Button (Main Scan only) === */
+.fab-emg{position:fixed;right:16px;bottom:16px;z-index:10000;
+background:#fff1f2;border:1px solid #fecaca;color:#9f1239;
+border-radius:999px;padding:12px 14px;font-weight:800}
+.emg-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);
+z-index:9998;display:none}
+.emg-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9999;
+display:none;padding:12px}
+.emg-panel{max-width:720px;margin:0 auto;background:#fff;
+border-radius:18px;padding:14px}
+.emg-item{border:1px solid #e2e8f0;border-radius:14px;
+padding:10px;margin-bottom:8px}
+.emg-jp{font-weight:700;font-size:16px}
+.emg-en{font-size:13px;color:#475569}
 
 </style>
 </head>
-<body>
-  <div class="wrap">
-    <div class="header">
-      <div class="frame-title">
-        <h1>血圧測定・心電図・息止め練習</h1>
-        <p>English Audio Guide</p>
-      </div>
-    </div>
+<body data-page="main-scan">
+<div class="header">
+  <div class="frame-title">
+    <h1>撮影本番（Main Scan）</h1>
+    <p>English Audio Guide</p>
+  </div>
+</div>
 
-    <p class="note">※ iPhone / iPad / Android で再生できます。自動再生は端末側で制限されるため、最初は「再生」を押してください。</p>
+<p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
 
-    <div class="main">
-      <div class="row">
-        <select id="stepSelect" aria-label="ステップ選択"></select>
-        <button id="prevBtn" type="button">← 前</button>
-        <button id="nextBtn" type="button">次 →</button>
-      </div>
-
-      <div class="label">日本語（内容）</div>
-      <div class="jp" id="jpText"></div>
-
-      <div class="label">English (Script)</div>
-      <div class="en" id="enText"></div>
-
-      <div class="controls">
-        <button id="playBtn" type="button">▶︎ 再生</button>
-        <button id="pauseBtn" type="button">⏸ 一時停止</button>
-        <button id="replayBtn" type="button">↻ もう一度</button>
-      </div>
-
-      <div class="status" id="status">待機中 / Ready</div>
-      <audio id="audio" controls preload="metadata"></audio>
-
-      <div class="hint">再生できない場合：端末の消音モード解除、音量、Bluetooth接続を確認してください。</div>
-    </div>
+<div class="main">
+  <div class="row">
+    <select id="sel"></select>
+    <button id="prev">← 前</button>
+    <button id="next">次 →</button>
   </div>
 
+  <div class="label">日本語（内容）</div>
+  <div class="jp" id="jp"></div>
+
+  <div class="label">English (Script)</div>
+  <div class="en" id="en"></div>
+
+  <div class="controls">
+    <button id="play">▶︎ 再生</button>
+    <button id="pause">⏸ 一時停止</button>
+    <button id="replay">↻ もう一度</button>
+  </div>
+
+  <div class="status" id="status">待機中 / Ready</div>
+  <audio id="player" controls></audio>
+
+  <div class="hint">
+    再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
+  </div>
+</div>
+
 <script>
-  // 25-step script (JP/EN). EN is extracted from the audio file names (cleaned for display).
-  const STEPS = [
-    { jp: "まず血圧を測定し、その後、胸に心電図を装着します。", en: "First, I’ll check your blood pressure, then I’ll put the ECG on your chest." },
-    { jp: "血圧を測ります。", en: "I’ll take your blood pressure." },
-    { jp: "左腕を横に伸ばしてください。", en: "Please extend your left arm to the side." },
-    { jp: "右腕を横に伸ばしてください。", en: "Please extend your right arm to the side." },
-    { jp: "胸に心電図を装着します。", en: "I’ll put the ECG on your chest." },
-    { jp: "女性スタッフが胸に心電図を装着します。", en: "A female staff member will put the ECG on your chest." },
-    { jp: "検査中は何度か息止めをしていただきます。1回あたり約10秒です。", en: "You will be asked to hold your breath several times during the scan, each time for about 10 seconds." },
-    { jp: "息を止めた後は、できるだけ体を動かさないでください。", en: "After you hold your breath, please try not to move your body." },
-    { jp: "検査中に体が動くと、心臓の画像がきれいに撮れない場合があります。", en: "If you move your body during the scan, we may not be able to get clear images of your heart." },
-    { jp: "それでは、一緒に練習してみましょう。", en: "Let’s try it together now." },
-    { jp: "大きく息を吸って、止めてください。", en: "Take a deep breath and hold it." },
-    { jp: "楽にしてください。", en: "You can relax now." },
-    { jp: "本番の撮影でも、今と同じように息を止めてください。", en: "As you did just now, please hold your breath the same way during the actual scan." },
-    { jp: "息止めが少し遅れています。可能であれば、もう少し早めに息を吸って止めてください。", en: "You’re holding your breath just a little late. If possible, please try to take a deep breath and hold it a little earlier." },
-    { jp: "合図が聞こえたら、すぐに息を吸って止めてください。最後まで待つと撮影に間に合わないことがあります。", en: "When you hear the instruction, please take a deep breath and hold it right away. If you wait until the end, it may be too late for the scan." },
-    { jp: "両腕を頭の上に上げてください。", en: "Please raise your arms above your head." },
-    { jp: "点滴をしている側の肘は、できるだけまっすぐに保ってください。", en: "Please try to keep the elbow straight on the side with the IV." },
-    { jp: "動かないようにするため、胸とお腹にクッションを置いて、背中側でベルトを留めます。", en: "I’ll put cushions on your chest and stomach to help you stay still and fasten them with belts behind your back." },
-    { jp: "大きく息を吸って、吐いてから、止めてください。", en: "Take a deep breath, breathe out, and hold it." },
-    { jp: "楽にしてください。", en: "You can relax." },
-    { jp: "苦しくないですか？きつくないですか？", en: "Is it too tight for you?" },
-    { jp: "安全のため、体にベルトを装着します。", en: "I’ll put the belt around you for your safety." },
-    { jp: "まず、造影剤を使わずに撮影します。", en: "First, we’ll take some images without a contrast dye." },
-    { jp: "これからベッドが動きます。動かないでください。", en: "The bed will move now, please stay still." },
-    { jp: "それでは検査を開始します。", en: "Now, we’ll start the test." }
-  ];
+const STEPS = [
+ {preview:"まもなく造影剤を注射します…", jp:"まもなく造影剤を注射します。", en:"We're going to inject the contrast dye soon."},
+ {preview:"気分が悪くなったら…", jp:"気分が悪くなったら、すぐに教えてください。", en:"If you feel sick, please let us know right away."},
+ {preview:"今から注入を開始します…", jp:"今から注入を開始します。痛みはありませんか？気分はいかがですか？", en:"Starting the injection now. Did you feel any pain? How are you feeling?"},
+ {preview:"だんだん温かく感じます…", jp:"だんだん体が温かく感じてきます。", en:"You'll start to feel warm gradually."},
+ {preview:"息止めの合図の後…", jp:"息止めの合図が聞こえたら、すぐに撮影が始まります。", en:"After you hear the instruction to hold your breath, the scan will start right away."},
+ {preview:"約1分後に再度撮影…", jp:"約1分後に、もう一度撮影します。気分はいかがですか？", en:"In about one minute, we're going to take another scan. How are you feeling?"},
+ {preview:"温かい感じは数分で…", jp:"温かい感じは数分でおさまります。", en:"The warm sensation will go away in a few minutes."}
+];
 
-  const stepSelect = document.getElementById('stepSelect');
-  const jpText = document.getElementById('jpText');
-  const enText = document.getElementById('enText');
-  const audio = document.getElementById('audio');
-  const status = document.getElementById('status');
+const sel=document.getElementById('sel'),
+jp=document.getElementById('jp'),
+en=document.getElementById('en'),
+player=document.getElementById('player'),
+status=document.getElementById('status');
 
-  const pad2 = (n) => String(n).padStart(2, '0');
+STEPS.forEach((s,i)=>{
+ const o=document.createElement('option');
+ o.value=i;
+ o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
+ sel.appendChild(o);
+});
 
-  STEPS.forEach((s, i) => {
-    const opt = document.createElement('option');
-    opt.value = i;
-    // Full JP in the dropdown list; closed state will be ellipsized by CSS.
-    opt.textContent = `${pad2(i + 1)}｜${s.jp}`;
-    stepSelect.appendChild(opt);
-  });
+let idx=0;
+function load(i){
+ idx=Math.max(0,Math.min(STEPS.length-1,i));
+ sel.value=idx;
+ jp.textContent=STEPS[idx].jp;
+ en.textContent=STEPS[idx].en;
+ player.src=`audio/step_${String(idx+1).padStart(2,'0')}.m4a`;
+ status.textContent="待機中 / Ready";
+}
+sel.onchange=()=>load(parseInt(sel.value));
+document.getElementById('prev').onclick=()=>load(idx-1);
+document.getElementById('next').onclick=()=>load(idx+1);
+document.getElementById('play').onclick=()=>player.play();
+document.getElementById('pause').onclick=()=>player.pause();
+document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
+player.onplay=()=>status.textContent="再生中 / Playing";
+player.onpause=()=>status.textContent="一時停止 / Paused";
+player.onended=()=>status.textContent="待機中 / Ready";
+load(0);
 
-  let idx = 0;
-  function load(i) {
-    idx = Math.max(0, Math.min(STEPS.length - 1, i));
-    stepSelect.value = idx;
-    jpText.textContent = STEPS[idx].jp;
-    enText.textContent = STEPS[idx].en;
-    audio.src = `audio/step_${pad2(idx + 1)}.m4a`;
-    status.textContent = '待機中 / Ready';
-  }
+document.addEventListener('DOMContentLoaded',()=>{
+ if(document.body.dataset.page!=='main-scan')return;
 
-  stepSelect.addEventListener('change', () => load(parseInt(stepSelect.value, 10)));
-  document.getElementById('prevBtn').addEventListener('click', () => load(idx - 1));
-  document.getElementById('nextBtn').addEventListener('click', () => load(idx + 1));
+ const EMG=[
+  {jp:'聞こえますか？意識ははっきりしていますか？',en:'Can you hear me? Are you okay?',a:'audio/emergency_01.m4a'},
+  {jp:'息苦しさはありますか？',en:'Are you having difficulty breathing?',a:'audio/emergency_02.m4a'},
+  {jp:'どこか痒みはありますか？',en:'Do you feel itchy anywhere?',a:'audio/emergency_03.m4a'},
+  {jp:'めまいやふらつきはありますか？',en:'Do you feel dizzy or lightheaded?',a:'audio/emergency_04.m4a'},
+  {jp:'吐き気や、吐きそうな感じはありますか？',en:'Do you have nausea or feel like vomiting?',a:'audio/emergency_05.m4a'},
+  {jp:'喉が締め付けられる感じ、または詰まる感じはありますか？',en:'Does your throat feel tight?',a:'audio/emergency_06.m4a'}
+ ];
 
-  document.getElementById('playBtn').addEventListener('click', () => audio.play());
-  document.getElementById('pauseBtn').addEventListener('click', () => audio.pause());
-  document.getElementById('replayBtn').addEventListener('click', () => {
-    audio.currentTime = 0;
-    audio.play();
-  });
+ const open=document.getElementById('emgOpen');
+ const back=document.getElementById('emgBackdrop');
+ const sheet=document.getElementById('emgSheet');
+ const list=document.getElementById('emgList');
+ const player=document.getElementById('emgPlayer');
+ const close=document.getElementById('emgClose');
 
-  audio.addEventListener('play', () => status.textContent = '再生中 / Playing');
-  audio.addEventListener('pause', () => status.textContent = '一時停止 / Paused');
-  audio.addEventListener('ended', () => status.textContent = '待機中 / Ready');
+ EMG.forEach((s,i)=>{
+  const d=document.createElement('div');d.className='emg-item';
+  d.innerHTML=`<div class="emg-jp">${i+1}. ${s.jp}</div>
+               <div class="emg-en">${s.en}</div>`;
+  d.onclick=()=>{player.src=s.a;player.play();}
+  list.appendChild(d);
+ });
 
-  load(0);
-
-// --- Emergency quick check (added) ---
-document.addEventListener('DOMContentLoaded', () => {
-  const EMG = [
-    {jp:'聞こえますか？意識ははっきりしていますか？', en:'Can you hear me? Are you okay?', audio:"audio/emergency_01.m4a"},
-    {jp:'息苦しさはありますか？', en:'Are you having difficulty breathing?', audio:"audio/emergency_02.m4a"},
-    {jp:'どこか痒みはありますか？', en:'Do you feel itchy anywhere?', audio:"audio/emergency_03.m4a"},
-    {jp:'めまいやふらつきはありますか？', en:'Do you feel dizzy or lightheaded?', audio:"audio/emergency_04.m4a"},
-    {jp:'吐き気や、吐きそうな感じはありますか？', en:'Do you have nausea or feel like vomiting?', audio:"audio/emergency_05.m4a"},
-    {jp:'喉が締め付けられる感じ、または詰まる感じはありますか？', en:'Does your throat feel tight?', audio:"audio/emergency_06.m4a"}
-  ];
-
-  const emgOpen = document.getElementById('emgOpen');
-  const emgBackdrop = document.getElementById('emgBackdrop');
-  const emgSheet = document.getElementById('emgSheet');
-  const emgClose = document.getElementById('emgClose');
-  const emgClose2 = document.getElementById('emgClose2');
-  const emgList = document.getElementById('emgList');
-  const emgPlayer = document.getElementById('emgPlayer');
-  const emgStatus = document.getElementById('emgStatus');
-  const emgStop = document.getElementById('emgStop');
-
-  if (!emgOpen || !emgBackdrop || !emgSheet || !emgClose || !emgClose2 || !emgList || !emgPlayer || !emgStatus || !emgStop) {
-    console.warn("Emergency UI elements not found.");
-    return;
-  }
-
-  function emgShow() {
-    emgBackdrop.style.display = 'block';
-    emgSheet.style.display = 'block';
-    emgBackdrop.setAttribute('aria-hidden', 'false');
-    emgSheet.setAttribute('aria-hidden', 'false');
-  }
-  function emgHide() {
-    emgBackdrop.style.display = 'none';
-    emgSheet.style.display = 'none';
-    emgBackdrop.setAttribute('aria-hidden', 'true');
-    emgSheet.setAttribute('aria-hidden', 'true');
-  }
-  function emgPlay(i) {
-    const item = EMG[i];
-    emgPlayer.src = item.audio;
-    emgPlayer.currentTime = 0;
-    emgPlayer.play();
-  }
-
-  EMG.forEach((s, i) => {
-    const card = document.createElement('div');
-    card.className = 'emg-item';
-
-    const jp = document.createElement('div');
-    jp.className = 'emg-jp';
-    jp.textContent = `${i + 1}. ${s.jp}`;
-
-    const en = document.createElement('div');
-    en.className = 'emg-en';
-    en.textContent = s.en;
-
-    const btn = document.createElement('button');
-    btn.className = 'emg-play';
-    btn.type = 'button';
-    btn.textContent = '▶︎ 再生';
-    btn.onclick = () => emgPlay(i);
-
-    card.appendChild(jp);
-    card.appendChild(en);
-    card.appendChild(btn);
-    emgList.appendChild(card);
-  });
-
-  emgOpen.onclick = emgShow;
-  emgBackdrop.onclick = emgHide;
-  emgClose.onclick = emgHide;
-  emgClose2.onclick = emgHide;
-
-  emgStop.onclick = () => {
-    emgPlayer.pause();
-    emgPlayer.currentTime = 0;
-    emgStatus.textContent = "待機中 / Ready";
-  };
-
-  emgPlayer.onplay = () => emgStatus.textContent = "再生中 / Playing";
-  emgPlayer.onpause = () => emgStatus.textContent = "一時停止 / Paused";
-  emgPlayer.onended = () => emgStatus.textContent = "待機中 / Ready";
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') emgHide();
-  });
+ open.onclick=()=>{back.style.display='block';sheet.style.display='block'};
+ back.onclick=close.onclick=()=>{back.style.display='none';sheet.style.display='none'};
 });
 
 </script>
 
-<!-- Emergency quick check (added) -->
-<button class="fab-emg" id="emgOpen" type="button" aria-haspopup="dialog" aria-controls="emgSheet">⚠ 急変時確認</button>
-
-<div class="emg-backdrop" id="emgBackdrop" aria-hidden="true"></div>
-
-<div class="emg-sheet" id="emgSheet" role="dialog" aria-modal="true" aria-labelledby="emgTitle" aria-hidden="true">
+<button class="fab-emg" id="emgOpen">⚠ 急変時確認</button>
+<div class="emg-backdrop" id="emgBackdrop"></div>
+<div class="emg-sheet" id="emgSheet">
   <div class="emg-panel">
-    <div class="emg-head">
-      <div>
-        <p class="emg-title" id="emgTitle">⚠ 急変時確認（Emergency Check）</p>
-        <p class="emg-sub">必要時にタップして質問を再生できます（通常の検査フローは変更しません）。</p>
-      </div>
-      <button class="emg-close" id="emgClose" type="button">閉じる</button>
-    </div>
-
-    <div class="emg-list" id="emgList"></div>
-
-    <div class="emg-actions">
-      <button class="emg-close" id="emgStop" type="button">■ 停止</button>
-      <button class="emg-close" id="emgClose2" type="button">閉じる</button>
-    </div>
-
-    <div class="emg-status" id="emgStatus">待機中 / Ready</div>
-    <audio id="emgPlayer" controls style="width:100%;margin-top:10px;"></audio>
+    <div id="emgList"></div>
+    <audio id="emgPlayer" controls style="width:100%"></audio>
+    <button id="emgClose">閉じる</button>
   </div>
 </div>
 
