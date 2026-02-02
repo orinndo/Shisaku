@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>撮影本番（Main Scan）音声ガイド</title>
+<title>患者入室（Patient Entry）音声ガイド</title>
 <style>
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
 background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
@@ -25,44 +25,20 @@ audio{width:100%;margin-top:10px;}
 .status{margin-top:8px;font-size:13px;color:#475569;}
 .hint{margin-top:10px;font-size:12px;color:#64748b;}
 
-/* === Emergency Button (Main Scan only) === */
-.fab-emg{position:fixed;right:16px;bottom:16px;z-index:10000;
-background:#fff1f2;border:1px solid #fecaca;color:#9f1239;
-border-radius:999px;padding:12px 14px;font-weight:800}
-.emg-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);
-z-index:9998;display:none}
-.emg-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9999;
-display:none;padding:12px}
-.emg-panel{max-width:720px;margin:0 auto;background:#fff;
-border-radius:18px;padding:14px}
-.emg-item{border:1px solid #e2e8f0;border-radius:14px;
-padding:10px;margin-bottom:8px}
-.emg-jp{font-weight:700;font-size:16px}
-.emg-en{font-size:13px;color:#475569}
-
-
-/* === Implant Device Sheet (same structure as Emergency) === */
-.fab-dev{position:fixed;left:16px;bottom:16px;z-index:10000;
-background:#f0f9ff;border:1px solid #bae6fd;color:#075985;
-border-radius:999px;padding:12px 14px;font-weight:800}
-.dev-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);
-z-index:9998;display:none}
-.dev-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9999;
-display:none;padding:12px}
-.dev-panel{max-width:720px;margin:0 auto;background:#fff;
-border-radius:18px;padding:14px}
-.dev-item{border:1px solid #e2e8f0;border-radius:14px;
-padding:10px;margin-bottom:8px}
-.dev-jp{font-weight:700;font-size:16px}
-.dev-en{font-size:13px;color:#475569}
-.dev-title{font-weight:800;margin-bottom:10px}
+.device-details{margin-top:10px;border:1px solid #cbd5f5;border-radius:14px;background:#f8fcff;padding:10px 12px;}
+.device-summary{cursor:pointer;font-size:14px;color:#0f172a;list-style:none;}
+.device-summary::-webkit-details-marker{display:none;}
+.device-list{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+.device-btn{font-size:15px;padding:12px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;text-align:left;}
+.device-btn:active{transform:scale(.98);}
+.device-btn.is-selected{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.25);background:#e0f2fe;}
 
 </style>
 </head>
-<body data-page="main-scan">
+<body>
 <div class="header">
   <div class="frame-title">
-    <h1>撮影本番（Main Scan）</h1>
+    <h1>患者入室（Patient Entry）</h1>
     <p>English Audio Guide</p>
   </div>
 </div>
@@ -94,17 +70,62 @@ padding:10px;margin-bottom:8px}
   <div class="hint">
     再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
   </div>
+
+  <div class="label" style="margin-top:18px;">植え込みデバイスがある場合 / If you have an implanted heart device</div>
+  <details class="device-details">
+    <summary class="device-summary">タップして選択（PM/CRT-P、ICD/CRT-D など） / Tap to choose</summary>
+
+    <div class="device-list" id="deviceList">
+      <button class="device-btn" type="button" data-device="pm">
+        PM、CRT-P ありの場合 / If you have a pacemaker (PM) or CRT-P
+      </button>
+      <button class="device-btn" type="button" data-device="icd">
+        ICD、CRT-D ありの場合 / If you have an ICD or CRT-D
+      </button>
+      <button class="device-btn" type="button" data-device="wait">
+        今からチェックします（担当者が来るまで待機） / We’ll check now (please wait)
+      </button>
+    </div>
+
+    <div class="device-script" id="deviceScript" style="display:none;">
+      <div class="label" style="margin-top:14px;">日本語（内容）</div>
+      <div class="jp" id="deviceJP"></div>
+
+      <div class="label">English (Script)</div>
+      <div class="en" id="deviceEN"></div>
+
+      <div class="controls">
+        <button id="devicePlay">▶︎ 再生</button>
+        <button id="devicePause">⏸ 一時停止</button>
+        <button id="deviceReplay">↻ もう一度</button>
+      </div>
+
+      <div class="status" id="deviceStatus">待機中 / Ready</div>
+    </div>
+
+  </details>
+
 </div>
 
 <script>
 const STEPS = [
- {preview:"まもなく造影剤を注射します…", jp:"まもなく造影剤を注射します。", en:"We're going to inject the contrast dye soon."},
- {preview:"気分が悪くなったら…", jp:"気分が悪くなったら、すぐに教えてください。", en:"If you feel sick, please let us know right away."},
- {preview:"今から注入を開始します…", jp:"今から注入を開始します。痛みはありませんか？気分はいかがですか？", en:"Starting the injection now. Did you feel any pain? How are you feeling?"},
- {preview:"だんだん温かく感じます…", jp:"だんだん体が温かく感じてきます。", en:"You'll start to feel warm gradually."},
- {preview:"息止めの合図の後…", jp:"息止めの合図が聞こえたら、すぐに撮影が始まります。", en:"After you hear the instruction to hold your breath, the scan will start right away."},
- {preview:"約1分後に再度撮影…", jp:"約1分後に、もう一度撮影します。気分はいかがですか？", en:"In about one minute, we're going to take another scan. How are you feeling?"},
- {preview:"温かい感じは数分で…", jp:"温かい感じは数分でおさまります。", en:"The warm sensation will go away in a few minutes."}
+ {preview:"本日の通訳はすでに退勤しています…", jp:"本日の通訳はすでに退勤していますので、英語のガイドを使って説明します。", en:"Our interpreter has already left for the day, so I'll explain using an English guide."},
+ {preview:"分からないことがあれば…", jp:"分からないことがあれば、いつでも言ってください。", en:"Please let me know if anything is unclear."},
+ {preview:"生年月日を教えてください…", jp:"生年月日を教えていただけますか？", en:"Could you tell me your date of birth?"},
+ {preview:"心臓デバイスの確認…", jp:"胸にペースメーカー、ICD、CRTなどの心臓デバイスは入っていますか？", en:"Do you have any heart devices in your chest, like a pacemaker, ICD, or CRT?"},
+ {preview:"ベッドに座ってください…", jp:"ベッドに座って、靴を脱いでください。", en:"Please sit on the bed and take off your shoes."},
+ {preview:"仰向けに寝てください…", jp:"ベッドに仰向けで寝てください。", en:"Please lie on your back on the bed."},
+ {preview:"頭と足の位置…", jp:"頭はここ、足はあちらです。", en:"Your head goes here, and your feet go there."},
+ {preview:"立ち上がって座る…", jp:"ゆっくり立ち上がって、ベッドに座ってください。", en:"Please stand up slowly and sit on the bed."},
+ {preview:"スライドボード…", jp:"背中の後ろにスライドボードを入れますね。", en:"I'll put a slide board behind your back."},
+ {preview:"ベッドへ移動…", jp:"これからベッドに移りますね。", en:"Let me slide you onto the bed now."},
+ {preview:"少し上に…", jp:"少し上にずれてください。", en:"Please slide up a little."},
+ {preview:"少し下に…", jp:"少し下にずれてください。", en:"Please slide down a little."},
+ {preview:"上に移動…", jp:"少し上に移動しますね。", en:"I'll slide you up a little."},
+ {preview:"下に移動…", jp:"少し下に移動しますね。", en:"I'll slide you down a little."},
+ {preview:"首は大丈夫？", jp:"首はつらくないですか？", en:"Is your neck comfortable?"},
+ {preview:"高さの確認…", jp:"高すぎたり低すぎたりしませんか？", en:"Is it not too high or low?"},
+ {preview:"ベッドが動きます…", jp:"ベッドが動きますので、動かないでください。", en:"The bed will move now, so please stay still."}
 ];
 
 const sel=document.getElementById('sel'),
@@ -138,63 +159,87 @@ document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play(
 player.onplay=()=>status.textContent="再生中 / Playing";
 player.onpause=()=>status.textContent="一時停止 / Paused";
 player.onended=()=>status.textContent="待機中 / Ready";
+
+// ====== Implanted heart device options (outside the main steps) ======
+const DEVICE_SCRIPTS = {
+  pm: {
+    jp: "では検査後に心臓の機器を確認して、正常に作動しているか確認しますね。",
+    en: "Okay, we’ll check your heart device after the test to confirm everything is functioning properly.",
+    audio: "audio/device_01_pm_crtp.m4a"
+  },
+  icd: {
+    jp: "では検査の前後に心臓の機器を確認して、正常に作動しているか確認しますね。",
+    en: "Okay, we’ll check your heart device before and after the test to confirm everything is functioning properly.",
+    audio: "audio/device_02_icd_crtd.m4a"
+  },
+  wait: {
+    jp: "今から心臓の機器のチェックをしますね。担当者が来るまで少しお待ちください。",
+    en: "We’ll check your heart device now. Please wait here for a moment until the staff arrives.",
+    audio: "audio/device_03_wait_for_staff.m4a"
+  }
+};
+
+const deviceList = document.getElementById('deviceList');
+const deviceScriptBox = document.getElementById('deviceScript');
+const deviceJP = document.getElementById('deviceJP');
+const deviceEN = document.getElementById('deviceEN');
+const deviceStatus = document.getElementById('deviceStatus');
+
+const devicePlay = document.getElementById('devicePlay');
+const devicePause = document.getElementById('devicePause');
+const deviceReplay = document.getElementById('deviceReplay');
+
+let lastDeviceKey = null;
+
+function selectDevice(key){
+  const data = DEVICE_SCRIPTS[key];
+  if(!data) return;
+
+  lastDeviceKey = key;
+
+  // UI highlight
+  const btns = deviceList ? Array.from(deviceList.querySelectorAll('.device-btn')) : [];
+  btns.forEach(b => b.classList.toggle('is-selected', b.getAttribute('data-device') === key));
+
+  // Show scripts
+  deviceJP.textContent = data.jp;
+  deviceEN.textContent = data.en;
+  if (deviceScriptBox) deviceScriptBox.style.display = '';
+
+  // Set audio to shared player
+  player.src = data.audio;
+  status.textContent = "待機中 / Ready";
+  if (deviceStatus) deviceStatus.textContent = "待機中 / Ready";
+}
+
+if (deviceList){
+  deviceList.addEventListener('click', (e) => {
+    const btn = e.target.closest('.device-btn');
+    if(!btn) return;
+    selectDevice(btn.getAttribute('data-device'));
+  });
+}
+
+if (devicePlay){
+  devicePlay.addEventListener('click', () => {
+    if(!lastDeviceKey) return;
+    player.play();
+  });
+}
+if (devicePause){
+  devicePause.addEventListener('click', () => player.pause());
+}
+if (deviceReplay){
+  deviceReplay.addEventListener('click', () => { player.currentTime = 0; player.play(); });
+}
+
+// Keep a separate status line for the device section (while still updating the main status too)
+player.addEventListener('play', () => { if (deviceStatus) deviceStatus.textContent = "再生中 / Playing"; });
+player.addEventListener('pause', () => { if (deviceStatus) deviceStatus.textContent = "一時停止 / Paused"; });
+player.addEventListener('ended', () => { if (deviceStatus) deviceStatus.textContent = "待機中 / Ready"; });
+
+
 load(0);
-
-document.addEventListener('DOMContentLoaded',()=>{
- if(document.body.dataset.page!=='main-scan')return;
-
- const EMG=[
-  {jp:'聞こえますか？意識ははっきりしていますか？',en:'Can you hear me? Are you okay?',a:'audio/emergency_01.m4a'},
-  {jp:'息苦しさはありますか？',en:'Are you having difficulty breathing?',a:'audio/emergency_02.m4a'},
-  {jp:'どこか痒みはありますか？',en:'Do you feel itchy anywhere?',a:'audio/emergency_03.m4a'},
-  {jp:'めまいやふらつきはありますか？',en:'Do you feel dizzy or lightheaded?',a:'audio/emergency_04.m4a'},
-  {jp:'吐き気や、吐きそうな感じはありますか？',en:'Do you have nausea or feel like vomiting?',a:'audio/emergency_05.m4a'},
-  {jp:'喉が締め付けられる感じ、または詰まる感じはありますか？',en:'Does your throat feel tight?',a:'audio/emergency_06.m4a'}
- ];
-
- const open=document.getElementById('emgOpen');
- const back=document.getElementById('emgBackdrop');
- const sheet=document.getElementById('emgSheet');
- const list=document.getElementById('emgList');
- const player=document.getElementById('emgPlayer');
- const close=document.getElementById('emgClose');
-
- EMG.forEach((s,i)=>{
-  const d=document.createElement('div');d.className='emg-item';
-  d.innerHTML=`<div class="emg-jp">${i+1}. ${s.jp}</div>
-               <div class="emg-en">${s.en}</div>`;
-  d.onclick=()=>{player.src=s.a;player.play();}
-  list.appendChild(d);
- });
-
- open.onclick=()=>{back.style.display='block';sheet.style.display='block'};
- back.onclick=close.onclick=()=>{back.style.display='none';sheet.style.display='none'};
-});
-
 </script>
-
-<button class="fab-emg" id="emgOpen">⚠ 急変時確認</button>
-<div class="emg-backdrop" id="emgBackdrop"></div>
-<div class="emg-sheet" id="emgSheet">
-  <div class="emg-panel">
-    <div id="emgList"></div>
-    <audio id="emgPlayer" controls style="width:100%"></audio>
-    <button id="emgClose">閉じる</button>
-  </div>
-</div>
-
-
-<button class="fab-dev" id="devOpen">📟 植え込みデバイス</button>
-<div class="dev-backdrop" id="devBackdrop"></div>
-<div class="dev-sheet" id="devSheet">
-  <div class="dev-panel">
-    <div class="dev-title">植え込みデバイスがある場合 / If you have an implanted heart device</div>
-    <div id="devList"></div>
-    <audio id="devPlayer" controls style="width:100%"></audio>
-    <button id="devClose">閉じる</button>
-  </div>
-</div>
-
-
 </body>
 </html>
