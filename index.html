@@ -33,6 +33,28 @@ audio{width:100%;margin-top:10px;}
 .device-btn:active{transform:scale(.98);}
 .device-btn.is-selected{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.25);background:#e0f2fe;}
 
+
+/* === Implant Device Modal (emergency-style sheet) === */
+.fab-dev{position:fixed;right:16px;bottom:16px;z-index:10000;
+background:#f8fcff;border:2px solid #38bdf8;color:#0f172a;
+border-radius:999px;padding:12px 14px;font-weight:800}
+.dev-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);
+z-index:9998;display:none}
+.dev-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9999;
+display:none;padding:12px 12px 18px}
+.dev-panel{max-width:860px;margin:0 auto;background:#fff;
+border-radius:20px;padding:12px 12px 14px;box-shadow:0 18px 40px rgba(15,23,42,.25)}
+.dev-list{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow:auto;padding:4px}
+.dev-item{border:1px solid #e2e8f0;border-radius:16px;padding:12px 12px;background:#ffffff}
+.dev-item:active{transform:scale(.99)}
+.dev-item.is-active{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.18)}
+.dev-jp{font-weight:800;font-size:16px;line-height:1.25}
+.dev-en{font-size:13px;color:#475569;margin-top:4px;line-height:1.25}
+.dev-audio{margin-top:12px}
+.dev-footer{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:10px}
+.dev-close{background:#eff6ff;border:1px solid #cbd5f5;border-radius:14px;padding:10px 14px;font-size:15px}
+.dev-title{font-size:12px;color:#64748b;margin:0 0 8px 6px}
+
 </style>
 </head>
 <body>
@@ -70,41 +92,6 @@ audio{width:100%;margin-top:10px;}
   <div class="hint">
     再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
   </div>
-
-  <div class="label" style="margin-top:18px;">植え込みデバイスがある場合 / If you have an implanted heart device</div>
-  <details class="device-details">
-    <summary class="device-summary">タップして選択（PM/CRT-P、ICD/CRT-D など） / Tap to choose</summary>
-
-    <div class="device-list" id="deviceList">
-      <button class="device-btn" type="button" data-device="pm">
-        PM、CRT-P ありの場合 / If you have a pacemaker (PM) or CRT-P
-      </button>
-      <button class="device-btn" type="button" data-device="icd">
-        ICD、CRT-D ありの場合 / If you have an ICD or CRT-D
-      </button>
-      <button class="device-btn" type="button" data-device="wait">
-        今からチェックします（担当者が来るまで待機） / We’ll check now (please wait)
-      </button>
-    </div>
-
-    <div class="device-script" id="deviceScript" style="display:none;">
-      <div class="label" style="margin-top:14px;">日本語（内容）</div>
-      <div class="jp" id="deviceJP"></div>
-
-      <div class="label">English (Script)</div>
-      <div class="en" id="deviceEN"></div>
-
-      <div class="controls">
-        <button id="devicePlay">▶︎ 再生</button>
-        <button id="devicePause">⏸ 一時停止</button>
-        <button id="deviceReplay">↻ もう一度</button>
-      </div>
-
-      <div class="status" id="deviceStatus">待機中 / Ready</div>
-    </div>
-
-  </details>
-
 </div>
 
 <script>
@@ -160,86 +147,77 @@ player.onplay=()=>status.textContent="再生中 / Playing";
 player.onpause=()=>status.textContent="一時停止 / Paused";
 player.onended=()=>status.textContent="待機中 / Ready";
 
-// ====== Implanted heart device options (outside the main steps) ======
-const DEVICE_SCRIPTS = {
-  pm: {
-    jp: "では検査後に心臓の機器を確認して、正常に作動しているか確認しますね。",
-    en: "Okay, we’ll check your heart device after the test to confirm everything is functioning properly.",
-    audio: "audio/device_01_pm_crtp.m4a"
-  },
-  icd: {
-    jp: "では検査の前後に心臓の機器を確認して、正常に作動しているか確認しますね。",
-    en: "Okay, we’ll check your heart device before and after the test to confirm everything is functioning properly.",
-    audio: "audio/device_02_icd_crtd.m4a"
-  },
-  wait: {
-    jp: "今から心臓の機器のチェックをしますね。担当者が来るまで少しお待ちください。",
-    en: "We’ll check your heart device now. Please wait here for a moment until the staff arrives.",
-    audio: "audio/device_03_wait_for_staff.m4a"
-  }
-};
-
-const deviceList = document.getElementById('deviceList');
-const deviceScriptBox = document.getElementById('deviceScript');
-const deviceJP = document.getElementById('deviceJP');
-const deviceEN = document.getElementById('deviceEN');
-const deviceStatus = document.getElementById('deviceStatus');
-
-const devicePlay = document.getElementById('devicePlay');
-const devicePause = document.getElementById('devicePause');
-const deviceReplay = document.getElementById('deviceReplay');
-
-let lastDeviceKey = null;
-
-function selectDevice(key){
-  const data = DEVICE_SCRIPTS[key];
-  if(!data) return;
-
-  lastDeviceKey = key;
-
-  // UI highlight
-  const btns = deviceList ? Array.from(deviceList.querySelectorAll('.device-btn')) : [];
-  btns.forEach(b => b.classList.toggle('is-selected', b.getAttribute('data-device') === key));
-
-  // Show scripts
-  deviceJP.textContent = data.jp;
-  deviceEN.textContent = data.en;
-  if (deviceScriptBox) deviceScriptBox.style.display = '';
-
-  // Set audio to shared player
-  player.src = data.audio;
-  status.textContent = "待機中 / Ready";
-  if (deviceStatus) deviceStatus.textContent = "待機中 / Ready";
-}
-
-if (deviceList){
-  deviceList.addEventListener('click', (e) => {
-    const btn = e.target.closest('.device-btn');
-    if(!btn) return;
-    selectDevice(btn.getAttribute('data-device'));
-  });
-}
-
-if (devicePlay){
-  devicePlay.addEventListener('click', () => {
-    if(!lastDeviceKey) return;
-    player.play();
-  });
-}
-if (devicePause){
-  devicePause.addEventListener('click', () => player.pause());
-}
-if (deviceReplay){
-  deviceReplay.addEventListener('click', () => { player.currentTime = 0; player.play(); });
-}
-
-// Keep a separate status line for the device section (while still updating the main status too)
-player.addEventListener('play', () => { if (deviceStatus) deviceStatus.textContent = "再生中 / Playing"; });
-player.addEventListener('pause', () => { if (deviceStatus) deviceStatus.textContent = "一時停止 / Paused"; });
-player.addEventListener('ended', () => { if (deviceStatus) deviceStatus.textContent = "待機中 / Ready"; });
-
 
 load(0);
+
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const DEV=[
+    {jp:'PM、CRT-P ありの場合：では検査後に心臓の機器を確認して、正常に作動しているか確認しますね。',
+     en:"Okay, we’ll check your heart device after the test to confirm everything is functioning properly.",
+     a:'audio/device_01_pm_crtp.m4a'},
+    {jp:'ICD、CRT-D ありの場合：では検査の前後に心臓の機器を確認して、正常に作動しているか確認しますね。',
+     en:"Okay, we’ll check your heart device before and after the test to confirm everything is functioning properly.",
+     a:'audio/device_02_icd_crtd.m4a'},
+    {jp:'今から心臓の機器のチェックをしますね。担当者が来るまで少しお待ちください。',
+     en:"We’ll check your heart device now. Please wait here for a moment until the staff arrives.",
+     a:'audio/device_03_wait_for_staff.m4a'}
+  ];
+
+  const open=document.getElementById('devOpen');
+  const back=document.getElementById('devBackdrop');
+  const sheet=document.getElementById('devSheet');
+  const list=document.getElementById('devList');
+  const player=document.getElementById('devPlayer');
+  const close=document.getElementById('devClose');
+
+  if(!open || !back || !sheet || !list || !player || !close) return;
+
+  const show=()=>{back.style.display='block';sheet.style.display='block';};
+  const hide=()=>{back.style.display='none';sheet.style.display='none';};
+
+  DEV.forEach((s,i)=>{
+    const d=document.createElement('div');
+    d.className='dev-item';
+    d.innerHTML=`<div class="dev-jp">${i+1}. ${s.jp}</div>
+                 <div class="dev-en">${s.en}</div>`;
+    d.addEventListener('click',()=>{
+      list.querySelectorAll('.dev-item').forEach(x=>x.classList.remove('is-active'));
+      d.classList.add('is-active');
+      player.src=s.a;
+      player.play();
+    });
+    list.appendChild(d);
+  });
+
+  open.addEventListener('click', show);
+  close.addEventListener('click', hide);
+  back.addEventListener('click', hide);
+
+  document.addEventListener('keydown',(e)=>{
+    if(e.key==='Escape') hide();
+  });
+});
+
 </script>
+
+<button class="fab-dev" id="devOpen">植え込みデバイス</button>
+<div class="dev-backdrop" id="devBackdrop"></div>
+<div class="dev-sheet" id="devSheet" role="dialog" aria-modal="true" aria-label="implant device">
+  <div class="dev-panel">
+    <div class="dev-title">植え込みデバイスがある場合 / If you have an implanted heart device</div>
+    <div class="dev-list" id="devList"></div>
+
+    <div class="dev-audio">
+      <audio id="devPlayer" controls style="width:100%"></audio>
+    </div>
+
+    <div class="dev-footer">
+      <button class="dev-close" id="devClose" type="button">閉じる</button>
+      <div style="font-size:12px;color:#64748b;">タップで再生 / Tap to play</div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
