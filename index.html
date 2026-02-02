@@ -3,106 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>音声ガイドを選択してください</title>
-
+<title>撮影本番（Main Scan）音声ガイド</title>
 <style>
-body {
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
-  background:linear-gradient(180deg,#f7fbff,#eef6ff);
-  color:#0f172a;
-}
-.header { padding:18px; }
-.header h1 { margin:0 0 6px; font-size:22px; }
-.header p { margin:0; font-size:13px; color:#475569; }
-.container { padding:10px 14px 24px; }
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
+.header{padding:18px 16px 10px;}
+.frame-title{border:2px solid #38bdf8;padding:14px 16px;border-radius:14px;background:#f8fcff;text-align:center;}
+.frame-title h1{margin:0;font-size:20px;}
+.frame-title p{margin:6px 0 0;font-size:14px;color:#475569;}
+.note{font-size:12px;color:#475569;margin:12px 16px;}
+.main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
+button:active{transform:scale(.98);}
+.label{margin-top:14px;font-size:13px;color:#475569;}
+.jp{font-size:18px;font-weight:600;margin-top:6px;}
+.en{font-size:16px;margin-top:4px;}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+audio{width:100%;margin-top:10px;}
+.status{margin-top:8px;font-size:13px;color:#475569;}
+.hint{margin-top:10px;font-size:12px;color:#64748b;}
 
-.card{
-  display:flex;
-  align-items:center;
-  padding:16px;
-  margin-bottom:14px;
-  background:#ffffff;
-  border:1px solid #e2e8f0;
-  border-radius:16px;
-  text-decoration:none;
-  color:#0f172a;
-  box-shadow:0 8px 18px rgba(15,23,42,0.06);
-}
-.num{
-  font-size:18px;
-  font-weight:700;
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(135deg,#93c5fd,#38bdf8);
-  color:#ffffff;
-  margin-right:14px;
-}
-.jp{ font-size:16px; font-weight:600; }
-.en{ font-size:13px; color:#475569; margin-top:2px; }
-.card:active{ transform:scale(.98); }
-
-/* footer (as in your original page) */
-.page-footer{
-  padding:10px 14px 24px;
-  text-align:center;
-  color:#475569;
-}
-.page-footer hr{
-  border:none;
-  border-top:1px solid #e2e8f0;
-  margin:18px 0 14px;
-}
-.page-footer .creator,
-.page-footer .creator-en{
-  margin:0;
-  font-size:13px;
-  line-height:1.6;
-}
-
-/* === Restored title blue frame (NO other changes) === */
-.header-title{
-  border:2px solid #38bdf8;
-  border-radius:16px;
-  padding:16px 14px;
-  background:#f8fbff;
-}
-
-
-/* === Language switch (added) === */
-.langbar{
-  display:flex;
-  gap:10px;
-  padding:0 18px 14px;
-}
-.langpill{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:10px 14px;
-  border-radius:14px;
-  border:1px solid #e2e8f0;
-  background:#ffffff;
-  box-shadow:0 8px 18px rgba(15,23,42,0.06);
-  text-decoration:none;
-  color:#0f172a;
-  font-size:13px;
-  font-weight:600;
-}
-.langpill.current{
-  border-color:#38bdf8;
-  background:linear-gradient(135deg,#93c5fd,#38bdf8);
-  color:#ffffff;
-}
+/* === Emergency Button (Main Scan only) === */
+.fab-emg{position:fixed;right:16px;bottom:16px;z-index:10000;
+background:#fff1f2;border:1px solid #fecaca;color:#9f1239;
+border-radius:999px;padding:12px 14px;font-weight:800}
+.emg-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);
+z-index:9998;display:none}
+.emg-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9999;
+display:none;padding:12px}
+.emg-panel{max-width:720px;margin:0 auto;background:#fff;
+border-radius:18px;padding:14px}
+.emg-item{border:1px solid #e2e8f0;border-radius:14px;
+padding:10px;margin-bottom:8px}
+.emg-jp{font-weight:700;font-size:16px}
+.emg-en{font-size:13px;color:#475569}
 
 
 /* === Implant Device Sheet (same structure as Emergency) === */
 .fab-dev{position:fixed;left:16px;bottom:16px;z-index:10000;
-background:#ecfeff;border:1px solid #a5f3fc;color:#155e75;
+background:#f0f9ff;border:1px solid #bae6fd;color:#075985;
 border-radius:999px;padding:12px 14px;font-weight:800}
 .dev-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);
 z-index:9998;display:none}
@@ -114,170 +55,146 @@ border-radius:18px;padding:14px}
 padding:10px;margin-bottom:8px}
 .dev-jp{font-weight:700;font-size:16px}
 .dev-en{font-size:13px;color:#475569}
+.dev-title{font-weight:800;margin-bottom:10px}
 
 </style>
-
-<link rel="stylesheet" href="translator.css">
 </head>
-
-<body>
-
+<body data-page="main-scan">
 <div class="header">
-  <div class="header-title frame-title">
-    <h1 class="main-title">
-      冠動脈造影CT検査<br>
-      <span class="sub-title">英語音声ガイド</span>
-    </h1>
-    <p class="en-title">
-      Coronary CT Angiography – English Audio Guide
-    </p>
+  <div class="frame-title">
+    <h1>撮影本番（Main Scan）</h1>
+    <p>English Audio Guide</p>
   </div>
 </div>
 
-<div class="langbar">
-<a class="langpill current" href="#" aria-current="page">英語（English）</a>
-<a class="langpill" href="../cn/">中国語（中文）</a>
-</div>
+<p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
 
-<div class="page-footer" style="padding-top:0;">
-  <hr>
-  <p class="creator">
-    作成：上地 慶知<br>
-    所属：放射線課
-  </p>
-  <p class="creator-en">
-    Created by Yoshitomo Uechi<br>
-    Department of Radiology
-  </p>
-</div>
-
-<div class="container">
-
-  <a class="card" href="https://orinndo.github.io/patient-entry/">
-    <div class="num">01</div>
-    <div class="texts">
-      <div class="jp">患者入室</div>
-      <div class="en">Patient Entry</div>
-    </div>
-  </a>
-
-  <a class="card" href="https://orinndo.github.io/ECG-BP-Positioning/">
-    <div class="num">02</div>
-    <div class="texts">
-      <div class="jp">心電図・血圧測定・息止め練習・ポジショニング</div>
-      <div class="en">ECG, Blood Pressure, Breath-hold Practice & Positioning</div>
-    </div>
-  </a>
-
-  <a class="card" href="https://orinndo.github.io/ABL/">
-    <div class="num">03</div>
-    <div class="texts">
-      <div class="jp">ABL前検査の場合</div>
-      <div class="en">Pre-ABL Examination</div>
-    </div>
-  </a>
-
-  <a class="card" href="https://orinndo.github.io/nitropen-sublingual/">
-    <div class="num">04</div>
-    <div class="texts">
-      <div class="jp">ニトロペン（舌下投与）</div>
-      <div class="en">Nitropen Sublingual Administration</div>
-    </div>
-  </a>
-
-  <a class="card" href="https://orinndo.github.io/explanation-of-contrast-dye-/">
-    <div class="num">05</div>
-    <div class="texts">
-      <div class="jp">造影剤の説明</div>
-      <div class="en">Explanation of Contrast Dye</div>
-    </div>
-  </a>
-
-  <a class="card" href="https://orinndo.github.io/IV-access/">
-    <div class="num">06</div>
-    <div class="texts">
-      <div class="jp">点滴ルート確保</div>
-      <div class="en">IV Access</div>
-    </div>
-  </a>
-
-  <a class="card" href="https://orinndo.github.io/corebeta-injection/">
-    <div class="num">07</div>
-    <div class="texts">
-      <div class="jp">コアベータ投与</div>
-      <div class="en">Corebeta Injection</div>
-    </div>
-  </a>
-
-  <a class="card" href="https://orinndo.github.io/test-injection-guide/">
-    <div class="num">08</div>
-    <div class="texts">
-      <div class="jp">テスト注入</div>
-      <div class="en">Test Injection Guide</div>
-    </div>
-  </a>
-
-  <a class="card" href="https://orinndo.github.io/actual-injection/">
-    <div class="num">09</div>
-    <div class="texts">
-      <div class="jp">撮影本番</div>
-      <div class="en">Actual Injection</div>
-    </div>
-  </a>
-
-  <a class="card" href="https://orinndo.github.io/after-the-exam/">
-    <div class="num">10</div>
-    <div class="texts">
-      <div class="jp">検査終了後</div>
-      <div class="en">After the Exam</div>
-    </div>
-  </a>
-
-</div>
-
-<!-- 翻訳ツール：＋ボタン -->
-<button id="fab" aria-label="翻訳ツールを開く" type="button">＋</button>
-
-<!-- 翻訳ツール：オーバーレイ（背景色を変えない） -->
-<div id="overlay" class="hidden" aria-hidden="true"></div>
-
-<!-- 翻訳ツール：パネル -->
-<div id="panel" class="hidden" role="dialog" aria-modal="true" aria-label="翻訳ツール">
-  <div class="panel-header">
-    <h2>翻訳ツール</h2>
-    <button id="copyBtn" type="button" aria-label="入力文をコピー">コピー</button>
+<div class="main">
+  <div class="row">
+    <select id="sel"></select>
+    <button id="prev">← 前</button>
+    <button id="next">次 →</button>
   </div>
 
-  <div class="translator-glass">
-    <textarea id="jp" placeholder="日本語を入力してください"></textarea>
+  <div class="label">日本語（内容）</div>
+  <div class="jp" id="jp"></div>
 
-    <div class="btns">
-      <button data-t="google" type="button">Google翻訳</button>
-      <button data-t="deepl" type="button">DeepL</button>
-      <button data-t="gemini" type="button">Gemini</button>
-      <button data-t="chatgpt" type="button">ChatGPT</button>
-    </div>
+  <div class="label">English (Script)</div>
+  <div class="en" id="en"></div>
 
-    <p class="note">
-      翻訳結果には誤りが含まれる場合があります。使用する前に、内容を必ず確認してください。
-    </p>
+  <div class="controls">
+    <button id="play">▶︎ 再生</button>
+    <button id="pause">⏸ 一時停止</button>
+    <button id="replay">↻ もう一度</button>
+  </div>
+
+  <div class="status" id="status">待機中 / Ready</div>
+  <audio id="player" controls></audio>
+
+  <div class="hint">
+    再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
   </div>
 </div>
 
-<div id="toast" class="toast" aria-live="polite"></div>
+<script>
+const STEPS = [
+ {preview:"まもなく造影剤を注射します…", jp:"まもなく造影剤を注射します。", en:"We're going to inject the contrast dye soon."},
+ {preview:"気分が悪くなったら…", jp:"気分が悪くなったら、すぐに教えてください。", en:"If you feel sick, please let us know right away."},
+ {preview:"今から注入を開始します…", jp:"今から注入を開始します。痛みはありませんか？気分はいかがですか？", en:"Starting the injection now. Did you feel any pain? How are you feeling?"},
+ {preview:"だんだん温かく感じます…", jp:"だんだん体が温かく感じてきます。", en:"You'll start to feel warm gradually."},
+ {preview:"息止めの合図の後…", jp:"息止めの合図が聞こえたら、すぐに撮影が始まります。", en:"After you hear the instruction to hold your breath, the scan will start right away."},
+ {preview:"約1分後に再度撮影…", jp:"約1分後に、もう一度撮影します。気分はいかがですか？", en:"In about one minute, we're going to take another scan. How are you feeling?"},
+ {preview:"温かい感じは数分で…", jp:"温かい感じは数分でおさまります。", en:"The warm sensation will go away in a few minutes."}
+];
 
-<script src="translator.js"></script>
+const sel=document.getElementById('sel'),
+jp=document.getElementById('jp'),
+en=document.getElementById('en'),
+player=document.getElementById('player'),
+status=document.getElementById('status');
+
+STEPS.forEach((s,i)=>{
+ const o=document.createElement('option');
+ o.value=i;
+ o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
+ sel.appendChild(o);
+});
+
+let idx=0;
+function load(i){
+ idx=Math.max(0,Math.min(STEPS.length-1,i));
+ sel.value=idx;
+ jp.textContent=STEPS[idx].jp;
+ en.textContent=STEPS[idx].en;
+ player.src=`audio/step_${String(idx+1).padStart(2,'0')}.m4a`;
+ status.textContent="待機中 / Ready";
+}
+sel.onchange=()=>load(parseInt(sel.value));
+document.getElementById('prev').onclick=()=>load(idx-1);
+document.getElementById('next').onclick=()=>load(idx+1);
+document.getElementById('play').onclick=()=>player.play();
+document.getElementById('pause').onclick=()=>player.pause();
+document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
+player.onplay=()=>status.textContent="再生中 / Playing";
+player.onpause=()=>status.textContent="一時停止 / Paused";
+player.onended=()=>status.textContent="待機中 / Ready";
+load(0);
+
+document.addEventListener('DOMContentLoaded',()=>{
+ if(document.body.dataset.page!=='main-scan')return;
+
+ const EMG=[
+  {jp:'聞こえますか？意識ははっきりしていますか？',en:'Can you hear me? Are you okay?',a:'audio/emergency_01.m4a'},
+  {jp:'息苦しさはありますか？',en:'Are you having difficulty breathing?',a:'audio/emergency_02.m4a'},
+  {jp:'どこか痒みはありますか？',en:'Do you feel itchy anywhere?',a:'audio/emergency_03.m4a'},
+  {jp:'めまいやふらつきはありますか？',en:'Do you feel dizzy or lightheaded?',a:'audio/emergency_04.m4a'},
+  {jp:'吐き気や、吐きそうな感じはありますか？',en:'Do you have nausea or feel like vomiting?',a:'audio/emergency_05.m4a'},
+  {jp:'喉が締め付けられる感じ、または詰まる感じはありますか？',en:'Does your throat feel tight?',a:'audio/emergency_06.m4a'}
+ ];
+
+ const open=document.getElementById('emgOpen');
+ const back=document.getElementById('emgBackdrop');
+ const sheet=document.getElementById('emgSheet');
+ const list=document.getElementById('emgList');
+ const player=document.getElementById('emgPlayer');
+ const close=document.getElementById('emgClose');
+
+ EMG.forEach((s,i)=>{
+  const d=document.createElement('div');d.className='emg-item';
+  d.innerHTML=`<div class="emg-jp">${i+1}. ${s.jp}</div>
+               <div class="emg-en">${s.en}</div>`;
+  d.onclick=()=>{player.src=s.a;player.play();}
+  list.appendChild(d);
+ });
+
+ open.onclick=()=>{back.style.display='block';sheet.style.display='block'};
+ back.onclick=close.onclick=()=>{back.style.display='none';sheet.style.display='none'};
+});
+
+</script>
+
+<button class="fab-emg" id="emgOpen">⚠ 急変時確認</button>
+<div class="emg-backdrop" id="emgBackdrop"></div>
+<div class="emg-sheet" id="emgSheet">
+  <div class="emg-panel">
+    <div id="emgList"></div>
+    <audio id="emgPlayer" controls style="width:100%"></audio>
+    <button id="emgClose">閉じる</button>
+  </div>
+</div>
 
 
 <button class="fab-dev" id="devOpen">📟 植え込みデバイス</button>
 <div class="dev-backdrop" id="devBackdrop"></div>
 <div class="dev-sheet" id="devSheet">
   <div class="dev-panel">
+    <div class="dev-title">植え込みデバイスがある場合 / If you have an implanted heart device</div>
     <div id="devList"></div>
     <audio id="devPlayer" controls style="width:100%"></audio>
     <button id="devClose">閉じる</button>
   </div>
 </div>
+
 
 </body>
 </html>
