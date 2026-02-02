@@ -173,8 +173,8 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   if(!open || !back || !sheet || !list || !player || !close) return;
 
-  const show=()=>{back.style.display='block';sheet.style.display='block';};
-  const hide=()=>{back.style.display='none';sheet.style.display='none';};
+  const show=()=>{back.style.display='block';sheet.style.display='block';open.style.display='none';};
+  const hide=()=>{back.style.display='none';sheet.style.display='none';open.style.display='';};
 
   DEV.forEach((s,i)=>{
     const d=document.createElement('div');
