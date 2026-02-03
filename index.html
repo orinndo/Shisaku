@@ -25,35 +25,33 @@ audio{width:100%;margin-top:10px;}
 .status{margin-top:8px;font-size:13px;color:#475569;}
 .hint{margin-top:10px;font-size:12px;color:#64748b;}
 
-.device-details{margin-top:10px;border:1px solid #cbd5f5;border-radius:14px;background:#f8fcff;padding:10px 12px;}
-.device-summary{cursor:pointer;font-size:14px;color:#0f172a;list-style:none;}
-.device-summary::-webkit-details-marker{display:none;}
-.device-list{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
-.device-btn{font-size:15px;padding:12px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;text-align:left;}
-.device-btn:active{transform:scale(.98);}
-.device-btn.is-selected{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.25);background:#e0f2fe;}
 
 
-/* === Implant Device Modal (emergency-style sheet) === */
-.fab-dev{position:fixed;left:16px;bottom:16px;z-index:10000;
+/* === Pain / Extravasation Modal (emergency-style sheet) === */
+.fab-pain{position:fixed;left:16px;bottom:16px;z-index:10000;
 background:#f8fcff;border:2px solid #38bdf8;color:#0f172a;
 border-radius:14px;padding:12px 14px;font-weight:800}
-.dev-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);
+.pain-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);
 z-index:9998;display:none}
-.dev-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9999;
+.pain-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9999;
 display:none;padding:12px 12px 18px}
-.dev-panel{max-width:860px;margin:0 auto;background:#fff;
+.pain-panel{max-width:860px;margin:0 auto;background:#fff;
 border-radius:20px;padding:12px 12px 14px;box-shadow:0 18px 40px rgba(15,23,42,.25)}
-.dev-list{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow:auto;padding:4px}
-.dev-item{border:1px solid #e2e8f0;border-radius:16px;padding:12px 12px;background:#ffffff}
-.dev-item:active{transform:scale(.99)}
-.dev-item.is-active{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.18)}
-.dev-jp{font-weight:800;font-size:16px;line-height:1.25}
-.dev-en{font-size:13px;color:#475569;margin-top:4px;line-height:1.25}
-.dev-audio{margin-top:12px}
-.dev-footer{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:10px}
-.dev-close{background:#eff6ff;border:1px solid #cbd5f5;border-radius:14px;padding:10px 14px;font-size:15px}
-.dev-title{font-size:12px;color:#64748b;margin:0 0 8px 6px}
+.pain-list{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow:auto;padding:4px}
+.pain-item{border:1px solid #e2e8f0;border-radius:16px;padding:12px 12px;background:#ffffff}
+.pain-item:active{transform:scale(.99)}
+.pain-item.is-active{border-color:#38bdf8;box-shadow:0 0 0 3px rgba(56,189,248,.18)}
+.pain-jp{font-weight:800;font-size:16px;line-height:1.25}
+.pain-en{font-size:13px;color:#475569;margin-top:4px;line-height:1.25}
+.pain-audio{margin-top:12px}
+.pain-footer{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:10px}
+.pain-close{background:#eff6ff;border:1px solid #cbd5f5;border-radius:14px;padding:10px 14px;font-size:15px}
+.pain-title{font-size:12px;color:#64748b;margin:0 0 8px 6px}
+.pain-badge{display:inline-block;margin-right:8px;padding:2px 8px;border-radius:999px;
+font-size:12px;font-weight:800;border:1px solid #cbd5f5;background:#eff6ff;color:#0f172a}
+.pain-badge.alert{border-color:#fecaca;background:#fff1f2;color:#9f1239}
+.pain-badge.check{border-color:#fde68a;background:#fffbeb;color:#92400e}
+.pain-badge.ok{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
 
 </style>
 </head>
@@ -151,38 +149,55 @@ player.onended=()=>status.textContent="待機中 / Ready";
 load(0);
 
 
+/* === Pain / Extravasation sheet (tap-to-play) === */
 document.addEventListener('DOMContentLoaded',()=>{
-  const DEV=[
-    {jp:'PM、CRT-P ありの場合：では検査後に心臓の機器を確認して、正常に作動しているか確認しますね。',
-     en:"Okay, we’ll check your heart device after the test to confirm everything is functioning properly.",
-     a:'audio/device_01_pm_crtp.m4a'},
-    {jp:'ICD、CRT-D ありの場合：では検査の前後に心臓の機器を確認して、正常に作動しているか確認しますね。',
-     en:"Okay, we’ll check your heart device before and after the test to confirm everything is functioning properly.",
-     a:'audio/device_02_icd_crtd.m4a'},
-    {jp:'今から心臓の機器のチェックをしますね。担当者が来るまで少しお待ちください。',
-     en:"We’ll check your heart device now. Please wait here for a moment until the staff arrives.",
-     a:'audio/device_03_wait_for_staff.m4a'}
+  const PAIN=[
+    {tag:'alert', jp:'痛みを感じたとのことなので、テスト注入を一度中止します。', 
+     en:"We’ll stop the test injection for now, because you felt some pain.",
+     a:'audio/pain_01_stop.m4a'},
+    {tag:'check', jp:'どのあたりが痛みますか？今、針を刺している場所ですか？',
+     en:"Where does it hurt? Is it around the injection site?",
+     a:'audio/pain_02_where.m4a'},
+    {tag:'check', jp:'その痛みは、少し我慢できそうですか？',
+     en:"Is the pain something you think you can tolerate?",
+     a:'audio/pain_03_tolerate.m4a'},
+    {tag:'check', jp:'血管の外に漏れていないかを確認しますので、少しの間、動かずにいてください。',
+     en:"We’re going to check for any leakage from the vein, so please stay still for a moment.",
+     a:'audio/pain_04_stay_still.m4a'},
+    {tag:'ok', jp:'血管からの漏れは確認されなかったので、針は正しい位置に入っているようです。',
+     en:"There’s no sign of leakage from the vein, so it looks like the needle is in the correct position.",
+     a:'audio/pain_05_no_leak.m4a'},
+    {tag:'ok', jp:'注入速度を少し落として検査を続けます。痛みは少し続くかもしれませんが、できる範囲で頑張って耐えていただけると助かります。もし痛みが強くなったら、すぐに教えてくださいね。',
+     en:"We’ll continue the scan at a slower injection speed. You may feel some discomfort, but if you can tolerate it, we’d really appreciate your cooperation. Please let us know right away if the pain gets worse.",
+     a:'audio/pain_06_continue_slow.m4a'},
+    {tag:'alert', jp:'血管からの漏れがありました。この部位は造影剤の注入には使いませんので、別の場所に新たに点滴を取らせていただきますね。',
+     en:"There was some leakage from the vein. So, we won’t use this site for the contrast dye injection. We’ll place a new IV line in a different spot.",
+     a:'audio/pain_07_leak.m4a'}
   ];
 
-  const open=document.getElementById('devOpen');
-  const back=document.getElementById('devBackdrop');
-  const sheet=document.getElementById('devSheet');
-  const list=document.getElementById('devList');
-  const player=document.getElementById('devPlayer');
-  const close=document.getElementById('devClose');
+  const open=document.getElementById('painOpen');
+  const back=document.getElementById('painBackdrop');
+  const sheet=document.getElementById('painSheet');
+  const list=document.getElementById('painList');
+  const player=document.getElementById('painPlayer');
+  const close=document.getElementById('painClose');
 
   if(!open || !back || !sheet || !list || !player || !close) return;
 
   const show=()=>{back.style.display='block';sheet.style.display='block';open.style.display='none';};
   const hide=()=>{back.style.display='none';sheet.style.display='none';open.style.display='';};
 
-  DEV.forEach((s,i)=>{
+  list.innerHTML='';
+
+  PAIN.forEach((s,i)=>{
     const d=document.createElement('div');
-    d.className='dev-item';
-    d.innerHTML=`<div class="dev-jp">${i+1}. ${s.jp}</div>
-                 <div class="dev-en">${s.en}</div>`;
+    d.className='pain-item';
+    const badgeClass = s.tag==='alert' ? 'alert' : (s.tag==='ok' ? 'ok' : 'check');
+    const badgeText  = s.tag==='alert' ? '注意' : (s.tag==='ok' ? '継続' : '確認');
+    d.innerHTML=`<div class="pain-jp"><span class="pain-badge ${badgeClass}">${badgeText}</span>${String(i+1).padStart(2,'0')}｜${s.jp}</div>
+                 <div class="pain-en">${s.en}</div>`;
     d.addEventListener('click',()=>{
-      list.querySelectorAll('.dev-item').forEach(x=>x.classList.remove('is-active'));
+      list.querySelectorAll('.pain-item').forEach(x=>x.classList.remove('is-active'));
       d.classList.add('is-active');
       player.src=s.a;
       player.play();
@@ -199,25 +214,30 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 });
 
+
+
+
 </script>
 
-<button class="fab-dev" id="devOpen">植え込みデバイスがある場合</button>
-<div class="dev-backdrop" id="devBackdrop"></div>
-<div class="dev-sheet" id="devSheet" role="dialog" aria-modal="true" aria-label="implant device">
-  <div class="dev-panel">
-    <div class="dev-title">植え込みデバイスがある場合 / If you have an implanted heart device</div>
-    <div class="dev-list" id="devList"></div>
 
-    <div class="dev-audio">
-      <audio id="devPlayer" controls style="width:100%"></audio>
+<button class="fab-pain" id="painOpen">痛みがある場合</button>
+<div class="pain-backdrop" id="painBackdrop"></div>
+<div class="pain-sheet" id="painSheet" role="dialog" aria-modal="true" aria-label="pain extravasation">
+  <div class="pain-panel">
+    <div class="pain-title">痛みがある場合 / If you feel pain during the test injection</div>
+    <div class="pain-list" id="painList"></div>
+
+    <div class="pain-audio">
+      <audio id="painPlayer" controls style="width:100%"></audio>
     </div>
 
-    <div class="dev-footer">
-      <button class="dev-close" id="devClose" type="button">閉じる</button>
-      <div style="font-size:12px;color:#64748b;">タップで再生 / Tap to play</div>
+    <div class="pain-footer">
+      <button class="pain-close" id="painClose" type="button">閉じる</button>
+      <div style="font-size:12px;color:#64748b;">カードをタップして再生 / Tap a card to play</div>
     </div>
   </div>
 </div>
+
 
 </body>
 </html>
