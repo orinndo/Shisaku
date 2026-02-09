@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>入室前の体位確認（Comfort Check Before Scan） 音声ガイド</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
+.header{padding:18px 16px 10px;}
+.frame-title{border:2px solid #38bdf8;padding:14px 16px;border-radius:14px;background:#f8fcff;text-align:center;}
+.frame-title h1{margin:0;font-size:20px;}
+.frame-title p{margin:6px 0 0;font-size:14px;color:#475569;}
+.note{font-size:12px;color:#475569;margin:12px 16px;}
+.main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
+button:active{transform:scale(.98);}
+.label{margin-top:14px;font-size:13px;color:#475569;}
+.jp{font-size:18px;font-weight:600;margin-top:6px;}
+.en{font-size:16px;margin-top:4px;}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+audio{width:100%;margin-top:10px;}
+.status{margin-top:8px;font-size:13px;color:#475569;}
+.hint{margin-top:10px;font-size:12px;color:#64748b;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="frame-title">
+    <h1>入室前の体位確認（Comfort Check Before Scan）</h1>
+    <p>English Audio Guide</p>
+  </div>
+</div>
+
+<p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
+
+<div class="main">
+  <div class="row">
+    <select id="sel"></select>
+    <button id="prev">← 前</button>
+    <button id="next">次 →</button>
+  </div>
+
+  <div class="label">日本語（内容）</div>
+  <div class="jp" id="jp"></div>
+
+  <div class="label">English (Script)</div>
+  <div class="en" id="en"></div>
+
+  <div class="controls">
+    <button id="play">▶︎ 再生</button>
+    <button id="pause">⏸ 一時停止</button>
+    <button id="replay">↻ もう一度</button>
+  </div>
+
+  <div class="status" id="status">待機中 / Ready</div>
+  <audio id="player" controls></audio>
+
+  <div class="hint">
+    再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
+  </div>
+</div>
+
+<script>
+const STEPS = [
+ {preview:"\u5c11\u3057\u5165\u308c\u3066\u78ba\u8a8d", jp:"\u64ae\u5f71\u306e\u524d\u306b\u3001\u5bdd\u53f0\u306b\u6a2a\u306b\u306a\u3063\u3066\u3044\u305f\u3060\u304d\u3001\u5c11\u3057\u3060\u3051\u88c5\u7f6e\u306e\u4e2d\u306b\u5165\u3063\u3066\u3001\u3064\u3089\u304f\u306a\u3044\u304b\u78ba\u8a8d\u3057\u307e\u3059\u3002\u4eca\u3001\u8a66\u3057\u3066\u3082\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f", en:"Before the scan, we\u2019ll have you lie on the table and move slightly into the scanner to make sure you\u2019re comfortable. Is that okay?"},
+ {preview:"\u3064\u3089\u3051\u308c\u3070\u6b62\u3081\u307e\u3059", jp:"\u9014\u4e2d\u3067\u6c17\u5206\u304c\u60aa\u304f\u306a\u3063\u305f\u308a\u3001\u3064\u3089\u304f\u306a\u3063\u305f\u3089\u3001\u3044\u3064\u3067\u3082\u6559\u3048\u3066\u304f\u3060\u3055\u3044\u3002\u3059\u3050\u306b\u4e2d\u6b62\u3057\u307e\u3059\u3002", en:"If you feel uncomfortable at any time, please let us know and we\u2019ll stop right away."},
+ {preview:"\u30af\u30c3\u30b7\u30e7\u30f3\u3068\u30d9\u30eb\u30c8", jp:"\u80f8\u3068\u304a\u8179\u306b\u30af\u30c3\u30b7\u30e7\u30f3\u3092\u7f6e\u3044\u3066\u3001\u52d5\u304b\u306a\u3044\u3088\u3046\u306b\u30d9\u30eb\u30c8\u3092\u7de0\u3081\u307e\u3059\u3002", en:"We\u2019ll place cushions on your chest and stomach and fasten a belt to help keep you still."},
+ {preview:"\u672c\u756a\u306e\u5f37\u3055\u3067", jp:"\u672c\u756a\u3068\u540c\u3058\u304f\u3089\u3044\u306e\u7de0\u3081\u5177\u5408\u3067\u4e00\u5ea6\u8a66\u3057\u3066\u3001\u3069\u3093\u306a\u611f\u3058\u304b\u78ba\u8a8d\u3057\u307e\u3057\u3087\u3046\u3002", en:"Let\u2019s try tightening it to the same level as the actual test so you can see how it feels."},
+ {preview:"\u5927\u4e08\u592b\u3067\u3059\u304b\uff1f", jp:"\u5927\u4e08\u592b\u3067\u3059\u304b\uff1f \u8fd1\u304f\u306b\u3044\u305f\u65b9\u304c\u5b89\u5fc3\u3067\u3057\u305f\u3089\u3001\u8fd1\u304f\u3067\u5f85\u6a5f\u3057\u307e\u3059\u304c\u3001\u3069\u3046\u3057\u307e\u3057\u3087\u3046\u304b\uff1f", en:"Are you okay? Would you feel more comfortable if we stayed nearby?"}
+];
+
+const sel=document.getElementById('sel'),
+jp=document.getElementById('jp'),
+en=document.getElementById('en'),
+player=document.getElementById('player'),
+status=document.getElementById('status');
+
+STEPS.forEach((s,i)=>{
+ const o=document.createElement('option');
+ o.value=i;
+ o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
+ sel.appendChild(o);
+});
+
+let idx=0;
+function load(i){
+ idx=Math.max(0,Math.min(STEPS.length-1,i));
+ sel.value=idx;
+ jp.textContent=STEPS[idx].jp;
+ en.textContent=STEPS[idx].en;
+ player.src=`audio22/step_${String(idx+1).padStart(2,'0')}.m4a`;
+ status.textContent="待機中 / Ready";
+}
+sel.onchange=()=>load(parseInt(sel.value));
+document.getElementById('prev').onclick=()=>load(idx-1);
+document.getElementById('next').onclick=()=>load(idx+1);
+document.getElementById('play').onclick=()=>player.play();
+document.getElementById('pause').onclick=()=>player.pause();
+document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
+player.onplay=()=>status.textContent="再生中 / Playing";
+player.onpause=()=>status.textContent="一時停止 / Paused";
+player.onended=()=>status.textContent="待機中 / Ready";
+load(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>受付・待合案内（Waiting Room Phrases） 音声ガイド</title>
+<style>
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Segoe UI",sans-serif;
+background:linear-gradient(180deg,#f7fbff,#eef6ff);color:#0f172a;}
+.header{padding:18px 16px 10px;}
+.frame-title{border:2px solid #38bdf8;padding:14px 16px;border-radius:14px;background:#f8fcff;text-align:center;}
+.frame-title h1{margin:0;font-size:20px;}
+.frame-title p{margin:6px 0 0;font-size:14px;color:#475569;}
+.note{font-size:12px;color:#475569;margin:12px 16px;}
+.main{margin:0 16px 24px;padding:16px;background:#fff;border-radius:18px;box-shadow:0 8px 18px rgba(15,23,42,.08);}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+select{flex:1;max-width:100%;font-size:16px;padding:10px 36px 10px 12px;border-radius:12px;border:1px solid #cbd5f5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+button{font-size:15px;padding:10px 14px;border-radius:12px;border:1px solid #cbd5f5;background:#eff6ff;}
+button:active{transform:scale(.98);}
+.label{margin-top:14px;font-size:13px;color:#475569;}
+.jp{font-size:18px;font-weight:600;margin-top:6px;}
+.en{font-size:16px;margin-top:4px;}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;}
+audio{width:100%;margin-top:10px;}
+.status{margin-top:8px;font-size:13px;color:#475569;}
+.hint{margin-top:10px;font-size:12px;color:#64748b;}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="frame-title">
+    <h1>受付・待合案内（Waiting Room Phrases）</h1>
+    <p>English Audio Guide</p>
+  </div>
+</div>
+
+<p class="note">※ iPhone / iPad / Android で再生できます。最初は「再生」を押してください。</p>
+
+<div class="main">
+  <div class="row">
+    <select id="sel"></select>
+    <button id="prev">← 前</button>
+    <button id="next">次 →</button>
+  </div>
+
+  <div class="label">日本語（内容）</div>
+  <div class="jp" id="jp"></div>
+
+  <div class="label">English (Script)</div>
+  <div class="en" id="en"></div>
+
+  <div class="controls">
+    <button id="play">▶︎ 再生</button>
+    <button id="pause">⏸ 一時停止</button>
+    <button id="replay">↻ もう一度</button>
+  </div>
+
+  <div class="status" id="status">待機中 / Ready</div>
+  <audio id="player" controls></audio>
+
+  <div class="hint">
+    再生できない場合：消音モード解除、音量、Bluetooth接続を確認してください。
+  </div>
+</div>
+
+<script>
+const STEPS = [
+ {preview:"\u304a\u540d\u524d\u3092\u4f3a\u3046", jp:"\u3059\u307f\u307e\u305b\u3093\u3001\u304a\u540d\u524d\u3092\u6559\u3048\u3066\u3044\u305f\u3060\u3051\u307e\u3059\u304b\uff1f", en:"Excuse me, could you tell me your name, please?"},
+ {preview:"\u6e96\u5099\u4e2d\u3067\u3059", jp:"\u305f\u3060\u3044\u307e\u691c\u67fb\u306e\u6e96\u5099\u3092\u3057\u3066\u304a\u308a\u307e\u3059\u306e\u3067\u3001\u3082\u3046\u5c11\u3005\u304a\u5f85\u3061\u304f\u3060\u3055\u3044\u3002", en:"We\u2019re currently preparing for your test, so please wait just a moment."},
+ {preview:"\u304a\u624b\u6d17\u3044\u3078", jp:"\u691c\u67fb\u304c\u59cb\u307e\u308b\u524d\u306b\u3001\u304a\u624b\u6d17\u3044\u306b\u884c\u3063\u3066\u304f\u3060\u3055\u3044\u3002", en:"Before the test begins, please go to the restroom."},
+ {preview:"\u5236\u9650\u306e\u78ba\u8a8d", jp:"\u78ba\u8a8d\u3067\u3059\u304c\u3001\u5225\u306e\u691c\u67fb\u306e\u305f\u3081\u306b\u300e\u304a\u624b\u6d17\u3044\u306b\u884c\u304b\u306a\u3044\u3067\u304f\u3060\u3055\u3044\u300f\u3068\u8a00\u308f\u308c\u3066\u3044\u307e\u3059\u304b\uff1f", en:"Just to confirm, have you been asked not to go to the restroom for another test?"},
+ {preview:"\u30a8\u30b3\u30fc\u78ba\u8a8d", jp:"\u627f\u77e5\u3057\u307e\u3057\u305f\u3002\u5148\u306b\u8d85\u97f3\u6ce2\u691c\u67fb\u304c\u3067\u304d\u308b\u304b\u78ba\u8a8d\u3057\u307e\u3059\u306e\u3067\u3001\u5c11\u3005\u3053\u3053\u3067\u304a\u5f85\u3061\u304f\u3060\u3055\u3044\u3002", en:"I see. I\u2019ll check if you can have the ultrasound first. Please wait here for a moment."},
+ {preview:"\u3067\u306f\u884c\u3063\u3066", jp:"\u5206\u304b\u308a\u307e\u3057\u305f\u3002\u305d\u308c\u3067\u306f\u691c\u67fb\u306e\u524d\u306b\u3001\u304a\u624b\u6d17\u3044\u306b\u884c\u3063\u3066\u304f\u3060\u3055\u3044\u3002", en:"Okay. In that case, please go to the restroom before the test."},
+ {preview:"\u304a\u547c\u3073\u3057\u307e\u3059", jp:"\u3067\u306f\u3001\u691c\u67fb\u304c\u59cb\u307e\u308b\u307e\u3067\u3053\u3061\u3089\u3067\u304a\u5f85\u3061\u304f\u3060\u3055\u3044\u3002\u9806\u756a\u306b\u306a\u308a\u307e\u3057\u305f\u3089\u304a\u547c\u3073\u3057\u307e\u3059\u3002", en:"Alright. Please wait here until the test starts. We\u2019ll call you when it\u2019s your turn."}
+];
+
+const sel=document.getElementById('sel'),
+jp=document.getElementById('jp'),
+en=document.getElementById('en'),
+player=document.getElementById('player'),
+status=document.getElementById('status');
+
+STEPS.forEach((s,i)=>{
+ const o=document.createElement('option');
+ o.value=i;
+ o.textContent=`${String(i+1).padStart(2,'0')}｜${s.jp}`;
+ sel.appendChild(o);
+});
+
+let idx=0;
+function load(i){
+ idx=Math.max(0,Math.min(STEPS.length-1,i));
+ sel.value=idx;
+ jp.textContent=STEPS[idx].jp;
+ en.textContent=STEPS[idx].en;
+ player.src=`audio21/step_${String(idx+1).padStart(2,'0')}.m4a`;
+ status.textContent="待機中 / Ready";
+}
+sel.onchange=()=>load(parseInt(sel.value));
+document.getElementById('prev').onclick=()=>load(idx-1);
+document.getElementById('next').onclick=()=>load(idx+1);
+document.getElementById('play').onclick=()=>player.play();
+document.getElementById('pause').onclick=()=>player.pause();
+document.getElementById('replay').onclick=()=>{player.currentTime=0;player.play();}
+player.onplay=()=>status.textContent="再生中 / Playing";
+player.onpause=()=>status.textContent="一時停止 / Paused";
+player.onended=()=>status.textContent="待機中 / Ready";
+load(0);
+</script>
+</body>
+</html>
